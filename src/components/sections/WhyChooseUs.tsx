@@ -34,15 +34,18 @@ const features: Feature[] = [
 export default function WhyChooseUs() {
   return (
     <section className="relative z-10 w-full">
-      <article className="mx-auto space-y-8 rounded-2xl bg-white p-6 shadow-lg md:rounded-4xl md:p-10 xl:px-16 2xl:px-20">
-        <header>
+      <article className="light-section mx-auto space-y-8 rounded-2xl bg-white p-6 shadow-lg md:rounded-4xl md:p-10 xl:px-16 2xl:px-20">
+        <header className="light-section" data-observe={true}>
           <h2 className="title-3 font-medium">¿Por qué elegirnos?</h2>
           <p className="mt-2">
             Descubre las claves que nos hacen diferentes a la competencia.
           </p>
         </header>
 
-        <ul className="m-0 grid list-none grid-cols-1 gap-4 p-0 md:grid-cols-3 lg:gap-6 xl:gap-8">
+        <ul
+          data-observe={true}
+          className="light-section m-0 grid list-none grid-cols-1 gap-4 p-0 md:grid-cols-3 lg:gap-6 xl:gap-8"
+        >
           {features.map((feature, index) => (
             <li key={index} className="space-y-2 md:space-y-4">
               <span className="flex justify-start">

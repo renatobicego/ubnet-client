@@ -99,6 +99,7 @@ export default function ImageCarousel({
 
   return (
     <section
+      data-observe={true}
       className={`relative max-h-[80vh] w-full overflow-hidden rounded-2xl md:rounded-4xl ${className}`}
       {...handlers}
     >

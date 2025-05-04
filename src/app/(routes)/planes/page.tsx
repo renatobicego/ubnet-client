@@ -24,11 +24,17 @@ export default function SubscriptionPlansPage() {
         height={816}
         className="absolute top-0 z-0 h-screen w-screen object-cover md:hidden"
       />
-      <section className="flex w-full flex-col items-center justify-center gap-4">
-        <h1 className="font-helvetica title-2 text-center font-medium">
+      <section className="relative z-10 flex w-full flex-col items-center justify-center gap-4">
+        <h1
+          data-observe={true}
+          className="font-helvetica title-2 text-center font-medium"
+        >
           Nuestros planes
         </h1>
-        <p className="text-center md:max-w-[80%] lg:max-w-[40%] 2xl:max-w-[30%]">
+        <p
+          data-observe={true}
+          className="text-center md:max-w-[80%] lg:max-w-[40%] 2xl:max-w-[30%]"
+        >
           ¿Buscás un plan que se ajuste a tus necesidades? ¡Checkeá las
           características de cada uno y contratalo ahora!
         </p>

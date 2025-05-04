@@ -24,7 +24,10 @@ const ContactForm = () => {
         alt="iconos de wifi"
         className="absolute bottom-[10%] z-0 !w-screen md:hidden"
       />
-      <section className="bg-primary/80 relative w-full rounded-2xl border border-white py-6 text-white md:rounded-4xl md:py-8 lg:py-10 xl:py-12">
+      <section
+        data-observe
+        className="bg-primary/80 relative w-full rounded-2xl border border-white py-6 text-white md:rounded-4xl md:py-8 lg:py-10 xl:py-12"
+      >
         <article className="relative z-10 mx-auto flex w-full flex-col items-center space-y-8 rounded-4xl p-6 md:p-10 xl:px-16 2xl:px-20">
           <header className="flex w-full flex-col items-center">
             <h4 className="title-2 text-center font-medium">¡Contactanos!</h4>

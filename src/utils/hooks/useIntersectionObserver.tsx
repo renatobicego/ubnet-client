@@ -1,38 +1,84 @@
 import { useEffect, useState } from "react";
 
 export const useIntersectionObserver = () => {
-  const [isDarkSection, setIsDarkSection] = useState(true);
+  const [isLightSection, setIsLightSection] = useState(false);
 
   useEffect(() => {
-    // Function to determine if a section should use dark mode for the header
-    const checkIfDarkSection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        // Only consider elements that are intersecting with the observation area
-        if (entry.isIntersecting) {
-          // Check if the intersecting section has the 'dark-section' class
-          const isDark = entry.target.classList.contains("dark-section");
-          setIsDarkSection(isDark);
+    // Function to check which section is behind the header
+    const checkSectionBehindHeader = () => {
+      const header = document.querySelector("#nav-bar-header") as HTMLElement;
+      if (!header) return;
+
+      // Get header position
+      const headerRect = header.getBoundingClientRect();
+
+      // Define a point in the middle of the header to check
+      const checkX = window.innerWidth / 2; // Center of the screen horizontally
+      const checkY = headerRect.top + headerRect.height / 2; // Middle of the header vertically
+
+      // Temporarily hide the header to see what's behind it
+      const headerOriginalVisibility = header.style.visibility;
+      const headerOriginalPointerEvents = header.style.pointerEvents;
+
+      header.style.visibility = "hidden";
+      header.style.pointerEvents = "none";
+
+      // Now get the element at this point - this will be what's behind the header
+      const elementBehindHeader = document.elementFromPoint(checkX, checkY);
+
+      // Restore header visibility
+      header.style.visibility = headerOriginalVisibility;
+      header.style.pointerEvents = headerOriginalPointerEvents;
+
+      if (elementBehindHeader) {
+        // Find the closest parent section or the element itself that has data-observe="true"
+        let currentElement: Element | null = elementBehindHeader;
+        let observableSection: Element | null = null;
+
+        while (currentElement) {
+          if (currentElement.getAttribute("data-observe") === "true") {
+            observableSection = currentElement;
+            break;
+          }
+          currentElement = currentElement.parentElement;
         }
-      });
+
+        // If we found a relevant section, check if it's a light section
+        if (observableSection) {
+          const isLight = observableSection.classList.contains("light-section");
+          setIsLightSection(isLight);
+        }
+      }
     };
 
-    // Create an observer with a threshold that triggers when 50% of the target is visible
-    const observer = new IntersectionObserver(checkIfDarkSection, {
-      threshold: 0.5,
-      rootMargin: "-80px 0px 0px 0px", // Adjust based on header height
-    });
+    // Use requestAnimationFrame for smooth performance
+    let ticking = false;
 
-    // Observe all sections that should affect the header
-    const sections = document.querySelectorAll('section[data-observe="true"]');
-    sections.forEach((section) => {
-      observer.observe(section);
-    });
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          checkSectionBehindHeader();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
 
-    // Cleanup function to disconnect the observer when component unmounts
+    // Check on initial load
+    checkSectionBehindHeader();
+
+    // Check on scroll
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Also check on resize as positions might change
+    window.addEventListener("resize", checkSectionBehindHeader);
+
+    // Cleanup
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", checkSectionBehindHeader);
     };
   }, []);
 
-  return { isDarkSection };
+  return { isLightSection };
 };

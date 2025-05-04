@@ -12,7 +12,10 @@ const PlanesGrid = ({
   const [filterSelected, setFilterSelected] = useState<string>("fiber");
   return (
     <>
-      <div className="mb-8 flex flex-wrap justify-center gap-2">
+      <div
+        data-observe={true}
+        className="mb-8 flex w-full flex-wrap justify-center gap-2"
+      >
         {filters.map((filter) => (
           <PrimaryButton
             key={filter.id}
@@ -26,7 +29,10 @@ const PlanesGrid = ({
         ))}
       </div>
 
-      <article className="w-full flex-col gap-6 max-md:flex md:grid md:grid-cols-2 lg:grid-cols-2">
+      <article
+        data-observe={true}
+        className="light-section w-full flex-col gap-6 max-md:flex md:grid md:grid-cols-2 lg:grid-cols-2"
+      >
         {mockedPlans
           .filter((plan) => !plan.isFeature)
           .map((plan) => (
