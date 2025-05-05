@@ -34,34 +34,36 @@ const Header = () => {
       isBlurred
       id="nav-bar-header"
     >
-      <NavbarBrand>
+      <NavbarBrand href="/" as={Link}>
         <Image src="/logo.png" alt="logo ubnet" className="max-md:w-20" />
       </NavbarBrand>
       <NavbarContent className="hidden gap-4 lg:flex" justify="center">
         <NavbarItem>
-          <Link className={"text-white"} href="#">
+          <Link className={"text-white"} href="/#avisos">
             Avisos
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link aria-current="page" className={"text-white"} href="#">
+          <Link aria-current="page" className={"text-white"} href="/planes">
             Servicios
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className={"text-white"} href="#">
+          <Link className={"text-white"} href="/cobertura">
             Mapa de Cobertura
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className={"text-white"} href="#">
+          <Link className={"text-white"} href="/sobre-nosotros">
             Sobre Nosotros
           </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <PrimaryButton>Contacto</PrimaryButton>
+          <PrimaryButton as={Link} href="/#contacto">
+            Contacto
+          </PrimaryButton>
         </NavbarItem>
         <NavbarItem className="lg:hidden">
           <MobileMenu />

@@ -10,7 +10,7 @@ interface PlanCardProps {
 export default function PlanCard({ plan, isMax = false }: PlanCardProps) {
   if (isMax) {
     return (
-      <Card className="bg-primary col-span-2 flex flex-col items-center justify-between gap-2 rounded-3xl border border-white p-6 px-8 text-white md:flex-row md:items-start">
+      <Card className="bg-primary col-span-2 flex flex-col items-center justify-between gap-2 rounded-3xl border border-white p-6 px-8 text-white md:flex-row md:items-end">
         <CardHeader className="w-fit flex-col items-start gap-4 p-0 md:max-lg:max-w-1/2">
           <h2 className="title-3 font-semibold xl:font-medium">{plan.title}</h2>
           <ul className="list-inside list-disc space-y-1 text-sm">
@@ -20,9 +20,7 @@ export default function PlanCard({ plan, isMax = false }: PlanCardProps) {
           </ul>
         </CardHeader>
         <CardBody className="flex flex-1 flex-col items-start gap-4 overflow-hidden p-0 md:items-end">
-          <Price price={plan.price} />
-
-          <div className="flex items-center gap-4 max-md:justify-between">
+          <div className="flex items-center gap-4 max-md:w-full max-md:justify-between">
             <PrimaryButton
               size="lg"
               color="secondary"
@@ -51,7 +49,6 @@ export default function PlanCard({ plan, isMax = false }: PlanCardProps) {
             <li key={index}>{item}</li>
           ))}
         </ul>
-        <Price price={plan.price} />
       </CardBody>
       <CardFooter className="justify-between p-0">
         <PrimaryButton>¡Lo quiero!</PrimaryButton>
@@ -64,16 +61,16 @@ export default function PlanCard({ plan, isMax = false }: PlanCardProps) {
   );
 }
 
-const Price = ({ price }: { price: number }) => {
-  return (
-    <div className="flex items-end gap-1">
-      <h3 className="text-3xl font-bold lg:text-4xl 2xl:text-5xl">${price}</h3>
-      <div className="mb-0.5 max-w-10 text-xs leading-4 lg:text-sm">
-        por mes
-      </div>
-    </div>
-  );
-};
+// const Price = ({ price }: { price: number }) => {
+//   return (
+//     <div className="flex items-end gap-1">
+//       <h3 className="text-3xl font-bold lg:text-4xl 2xl:text-5xl">${price}</h3>
+//       <div className="mb-0.5 max-w-10 text-xs leading-4 lg:text-sm">
+//         por mes
+//       </div>
+//     </div>
+//   );
+// };
 
 const UploadDownloadValues = ({
   download,

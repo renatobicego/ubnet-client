@@ -1,4 +1,5 @@
-import { SubscriptionPlan } from "@/types/subscription-plans";
+import { ShapeData } from "@/types/maps-types";
+import { SubscriptionPlan, Zone } from "@/types/subscription-plans";
 
 export const mockedPlans: SubscriptionPlan[] = [
   {
@@ -8,7 +9,6 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    price: 3000,
     isPromotionPlan: false,
     isFeature: false,
     isActive: true,
@@ -16,8 +16,8 @@ export const mockedPlans: SubscriptionPlan[] = [
       upload: "30 Mb",
       download: "50 Mb",
     },
-    region: "default",
     type: "light",
+    planType: "fiber",
   },
   {
     _id: "2",
@@ -26,7 +26,6 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    price: 3000,
     isPromotionPlan: false,
     isFeature: false,
     isActive: true,
@@ -34,8 +33,8 @@ export const mockedPlans: SubscriptionPlan[] = [
       upload: "30 Mb",
       download: "50 Mb",
     },
-    region: "default",
     type: "light",
+    planType: "fiber",
   },
   {
     _id: "3",
@@ -44,7 +43,6 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    price: 3000,
     isPromotionPlan: false,
     isFeature: false,
     isActive: true,
@@ -52,8 +50,8 @@ export const mockedPlans: SubscriptionPlan[] = [
       upload: "30 Mb",
       download: "50 Mb",
     },
-    region: "default",
     type: "light",
+    planType: "5g",
   },
   {
     _id: "4",
@@ -62,7 +60,6 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    price: 3000,
     isPromotionPlan: false,
     isFeature: false,
     isActive: true,
@@ -70,8 +67,8 @@ export const mockedPlans: SubscriptionPlan[] = [
       upload: "30 Mb",
       download: "50 Mb",
     },
-    region: "default",
     type: "light",
+    planType: "5g",
   },
   {
     _id: "5",
@@ -80,7 +77,6 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 5 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    price: 3000,
     isPromotionPlan: false,
     isFeature: true,
     isActive: true,
@@ -88,7 +84,52 @@ export const mockedPlans: SubscriptionPlan[] = [
       upload: "30 Mb",
       download: "50 Mb",
     },
-    region: "default",
     type: "max",
+    planType: "fiber",
+  },
+];
+
+export const mockedZones: Zone[] = [
+  { _id: "1", label: "Zona 1", plans: mockedPlans },
+  { _id: "2", label: "Zona 2", plans: mockedPlans },
+];
+
+export const mockedShapes: ShapeData[] = [
+  {
+    clientId: Math.random().toString(),
+    type: "CIRCLE",
+    _id: "1",
+    circle: {
+      center: {
+        lat: 37.7749,
+        lng: -122.4194,
+      },
+      radius: 100000,
+    },
+  },
+  {
+    clientId: Math.random().toString(),
+    type: "POLYGON",
+    _id: "2",
+    polygon: {
+      path: [
+        {
+          lat: 56.7749,
+          lng: -122.4194,
+        },
+        {
+          lat: 37.7749,
+          lng: -122.4194,
+        },
+        {
+          lat: 37.7749,
+          lng: -70.4194,
+        },
+        {
+          lat: 56.7749,
+          lng: -70.4194,
+        },
+      ],
+    },
   },
 ];

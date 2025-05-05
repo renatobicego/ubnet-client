@@ -1,8 +1,8 @@
+export type PlanType = "fiber" | "5g" | "security";
 export interface SubscriptionPlan {
   _id: string;
   title: string;
   detail: string[];
-  price: number;
   isPromotionPlan: boolean;
   isFeature: boolean;
   isActive: boolean;
@@ -12,5 +12,11 @@ export interface SubscriptionPlan {
   };
   sideText?: string;
   type?: string;
-  region: string;
+  planType: PlanType;
+}
+
+export interface Zone {
+  _id: string;
+  label: string;
+  plans: SubscriptionPlan[];
 }

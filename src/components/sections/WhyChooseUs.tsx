@@ -34,7 +34,7 @@ const features: Feature[] = [
 export default function WhyChooseUs() {
   return (
     <section className="relative z-10 w-full">
-      <article className="light-section mx-auto space-y-8 rounded-2xl bg-white p-6 shadow-lg md:rounded-4xl md:p-10 xl:px-16 2xl:px-20">
+      <article className="mx-auto space-y-8 rounded-2xl bg-white p-6 shadow-lg md:rounded-4xl md:p-10 xl:px-16 2xl:px-20">
         <header className="light-section" data-observe={true}>
           <h2 className="title-3 font-medium">¿Por qué elegirnos?</h2>
           <p className="mt-2">

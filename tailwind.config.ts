@@ -18,6 +18,7 @@ const config = {
       },
       backgroundImage: {
         primary_bg: "url('/background.png')",
+        secondary_bg: "url('/background-2.png')",
       },
       screens: {
         "2xl": "1440px",

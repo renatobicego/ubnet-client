@@ -1,7 +1,8 @@
 "use client";
-import { Form, Image, Input, Textarea } from "@heroui/react";
+import { Form, Image, Input, Link, Textarea } from "@heroui/react";
 import React from "react";
 import PrimaryButton from "../buttons/PrimaryButton";
+import { FaPhone } from "react-icons/fa6";
 
 const ContactForm = () => {
   return (
@@ -25,6 +26,7 @@ const ContactForm = () => {
         className="absolute bottom-[10%] z-0 !w-screen md:hidden"
       />
       <section
+        id="contacto"
         data-observe
         className="bg-primary/80 relative w-full rounded-2xl border border-white py-6 text-white md:rounded-4xl md:py-8 lg:py-10 xl:py-12"
       >
@@ -96,13 +98,30 @@ const ContactForm = () => {
               type="text"
               className="w-full"
             />
-            <PrimaryButton
-              color="secondary"
-              type="submit"
-              className="text-primary"
-            >
-              Enviar
-            </PrimaryButton>
+            <div className="flex w-full flex-row items-start justify-between gap-4">
+              <PrimaryButton
+                color="secondary"
+                type="submit"
+                className="text-primary"
+              >
+                Enviar
+              </PrimaryButton>
+              <address className="flex flex-col items-start gap-2.5 text-white not-italic md:items-end">
+                <PrimaryButton
+                  color="secondary"
+                  className="text-white"
+                  variant="bordered"
+                  startContent={<FaPhone />}
+                  as={Link}
+                  href="tel:2974262219"
+                >
+                  2974262219
+                </PrimaryButton>
+                <p className="text-xs md:text-sm xl:text-base">
+                  Lunes a viernes de 9hs a 18hs
+                </p>
+              </address>
+            </div>
           </Form>
         </article>
       </section>

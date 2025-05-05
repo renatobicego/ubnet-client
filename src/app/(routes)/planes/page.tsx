@@ -1,8 +1,9 @@
 import PlanesGrid from "@/components/sections/PlanesGrid";
+import { PlanType } from "@/types/subscription-plans";
 import Image from "next/image";
 
 export default function SubscriptionPlansPage() {
-  const filters = [
+  const filters: { id: PlanType; label: string }[] = [
     { id: "fiber", label: "Ubnet Fiber" },
     { id: "5g", label: "Microondas 5G" },
     { id: "security", label: "Cámaras de Seguridad" },
@@ -14,6 +15,7 @@ export default function SubscriptionPlansPage() {
         src="/wifi-big.png"
         alt="iconos de wifi"
         width={1736}
+        priority
         height={1581}
         className="absolute top-0 z-0 w-screen object-cover max-md:hidden md:h-full"
       />
@@ -21,6 +23,7 @@ export default function SubscriptionPlansPage() {
         src="/wifi-grid-mobile.png"
         alt="iconos de wifi en celular"
         width={979}
+        priority
         height={816}
         className="absolute top-0 z-0 h-screen w-screen object-cover md:hidden"
       />

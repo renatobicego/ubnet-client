@@ -12,19 +12,23 @@ const MobileMenu = () => {
   const menuItems = [
     {
       label: "Avisos",
-      href: "#",
+      href: "/#avisos",
     },
     {
       label: "Servicios",
-      href: "#",
+      href: "/planes",
     },
     {
       label: "Mapa de Cobertura",
-      href: "#",
+      href: "/cobertura",
+    },
+    {
+      label: "Sobre Nosotros",
+      href: "/sobre-nosotros",
     },
     {
       label: "Contacto",
-      href: "#",
+      href: "/#contacto",
     },
   ];
 
