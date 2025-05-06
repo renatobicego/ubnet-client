@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
+import WhatsappButton from "@/components/buttons/WhatsappButton";
 
 const Eurostile = localFont({
   src: [
@@ -46,11 +47,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${HelveticaNeue.variable} ${Eurostile.variable} layout w-screen overflow-x-hidden antialiased`}
+        className={`${HelveticaNeue.variable} ${Eurostile.variable} layout relative w-screen overflow-x-hidden antialiased`}
       >
         <Providers>
           <Header />
           {children}
+          <WhatsappButton />
           <Footer />
         </Providers>
       </body>
