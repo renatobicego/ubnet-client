@@ -1,7 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcrypt";
-import { getUserByEmail } from "@/services/authServices";
+import { loginUser } from "@/services/authServices";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -23,25 +22,20 @@ export const authOptions: NextAuthOptions = {
         }
 
         // should be replaced with a call to login to server
-        const user = await getUserByEmail(credentials.email);
-
-        if (!user) {
-          return null;
-        }
-
-        const passwordMatch = await compare(
+        const authUser = await loginUser(
+          credentials.email,
           credentials.password,
-          user.password,
         );
 
-        if (!passwordMatch) {
+        if (!authUser) {
           return null;
         }
 
         return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
+          id: authUser.user.id,
+          email: authUser.user.email,
+          name: authUser.user.name,
+          backendToken: authUser.access_token,
         };
       },
     }),
@@ -52,12 +46,14 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.backendToken = user.backendToken;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id;
+        session.backendToken = token.backendToken;
       }
       return session;
     },

@@ -11,6 +11,7 @@ const LoginForm = () => {
   const router = useRouter();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
     setIsLoading(true);
     setError(null);
@@ -27,7 +28,7 @@ const LoginForm = () => {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/admin");
       router.refresh();
     } catch {
       setError("Ocurrió un error al iniciar sesión. Intente nuevamente.");

@@ -10,17 +10,20 @@ declare module "next-auth" {
       /** The user's id */
       id: string;
     } & DefaultSession["user"];
+    backendToken: string;
   }
 
   interface User {
     id: string;
     name: string;
     email: string;
+    backendToken: string;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
+    backendToken: string;
   }
 }
