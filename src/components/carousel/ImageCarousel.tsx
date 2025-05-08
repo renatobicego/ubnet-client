@@ -6,8 +6,14 @@ import { useSwipeable } from "react-swipeable";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Button, Image } from "@heroui/react";
 
+export type ImageBanner = {
+  description: string;
+  imageUrl: string;
+  isActive: boolean;
+  _id: string;
+};
 interface ImageCarouselProps {
-  images: string[];
+  images: ImageBanner[];
   autoPlay?: boolean;
   autoPlayInterval?: number;
   showArrows?: boolean;
@@ -116,8 +122,8 @@ export default function ImageCarousel({
             className="absolute h-full w-full"
           >
             <Image
-              src={images[currentIndex]}
-              alt={`Imagen ${currentIndex}`}
+              src={images[currentIndex].imageUrl}
+              alt={`Imagen ${currentIndex}: ${images[currentIndex].description}`}
               className="h-full w-full object-cover"
               removeWrapper
             />

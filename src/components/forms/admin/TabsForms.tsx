@@ -1,20 +1,14 @@
 "use client";
 import { Tabs, Tab, Card, CardBody } from "@heroui/react";
 import React from "react";
+import BannerTab from "./Banner/BannerTab";
 
 const TabsForms = () => {
   return (
-    <section>
-      <Tabs aria-label="Options">
-        <Tab key="photos" title="Photos">
-          <Card>
-            <CardBody>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </CardBody>
-          </Card>
+    <section className="w-full rounded-lg bg-white p-4">
+      <Tabs aria-label="Opciones de administración">
+        <Tab key="banners" title="Banners">
+          <BannerTab />
         </Tab>
         <Tab key="music" title="Music">
           <Card>
