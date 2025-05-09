@@ -10,6 +10,7 @@ export type ImageBanner = {
   description: string;
   imageUrl: string;
   isActive: boolean;
+  order: number;
   _id: string;
 };
 interface ImageCarouselProps {

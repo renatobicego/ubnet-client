@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import type { ImageBanner } from "@/components/carousel/ImageCarousel";
-import { Card, CardFooter, Image } from "@heroui/react";
+import { Card, CardFooter, Image, Spinner } from "@heroui/react";
 import {
   DndContext,
   closestCenter,
@@ -20,6 +20,7 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 
 // Sortable banner item component
 const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
@@ -71,12 +72,18 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
 
 interface BannerVisualizerProps {
   banners: ImageBanner[];
-  onReorder?: (newOrder: ImageBanner[]) => void;
+  onReorder: Dispatch<SetStateAction<ImageBanner[]>>;
+  loading: boolean;
+  onRefresh: () => Promise<void>;
 }
 
-const BannerVisualizer = ({ banners, onReorder }: BannerVisualizerProps) => {
-  const [items, setItems] = useState<ImageBanner[]>(banners);
-
+const BannerVisualizer = ({
+  banners,
+  onReorder,
+  loading,
+  onRefresh,
+}: BannerVisualizerProps) => {
+  const [isEditing, setIsEditing] = useState(false);
   // Set up sensors for drag detection
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -90,23 +97,28 @@ const BannerVisualizer = ({ banners, onReorder }: BannerVisualizerProps) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      setItems((currentItems) => {
+      setIsEditing(true);
+      onReorder((currentItems) => {
         const oldIndex = currentItems.findIndex(
           (item) => item._id === active.id,
         );
         const newIndex = currentItems.findIndex((item) => item._id === over.id);
 
-        const newOrder = arrayMove(currentItems, oldIndex, newIndex);
-
-        // Call the callback if provided
-        if (onReorder) {
-          onReorder(newOrder);
-        }
+        const newOrder = arrayMove(currentItems, oldIndex, newIndex).map(
+          (item, index) => ({
+            ...item,
+            order: index,
+          }),
+        );
 
         return newOrder;
       });
     }
   };
+
+  if (loading) {
+    return <Spinner className="mx-auto mt-8" size="lg" />;
+  }
 
   return (
     <DndContext
@@ -114,16 +126,32 @@ const BannerVisualizer = ({ banners, onReorder }: BannerVisualizerProps) => {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <article className="flex w-full items-center justify-between gap-4 overflow-x-auto p-2">
-        <SortableContext
-          items={items.map((item) => item._id)}
-          strategy={horizontalListSortingStrategy}
-        >
-          {items.map((banner) => (
-            <SortableBannerItem key={banner._id} banner={banner} />
-          ))}
-        </SortableContext>
-      </article>
+      <div className="flex w-full flex-col items-end justify-between gap-4">
+        <article className="flex w-full items-center justify-between gap-4 overflow-x-auto p-2">
+          <SortableContext
+            items={banners.map((item) => item._id)}
+            strategy={horizontalListSortingStrategy}
+          >
+            {banners.map((banner) => (
+              <SortableBannerItem key={banner._id} banner={banner} />
+            ))}
+          </SortableContext>
+        </article>
+        {isEditing && (
+          <menu className="flex items-center gap-2">
+            <PrimaryButton
+              onPress={() => {
+                setIsEditing(false);
+                onRefresh();
+              }}
+              color="secondary"
+            >
+              Cancelar
+            </PrimaryButton>
+            <PrimaryButton>Guardar Cambios</PrimaryButton>
+          </menu>
+        )}
+      </div>
     </DndContext>
   );
 };
