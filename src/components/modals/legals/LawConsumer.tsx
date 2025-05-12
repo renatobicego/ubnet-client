@@ -1,17 +1,17 @@
 import React from "react";
-import PrimaryButton from "../buttons/PrimaryButton";
+import PrimaryButton from "../../buttons/PrimaryButton";
 import CustomModal from "./CustomModal";
 
-const TermsConditions = () => {
+const LawConsumer = () => {
   return (
     <CustomModal
-      title="Términos y condiciones"
+      title="Ley de Defensa al Consumidor"
       button={
         <PrimaryButton
           size="sm"
           className="bg-black p-0 font-normal text-white max-md:text-xs"
         >
-          Términos y condiciones
+          Ley de Defensa al Consumidor
         </PrimaryButton>
       }
     >
@@ -23,4 +23,4 @@ const TermsConditions = () => {
   );
 };
 
-export default TermsConditions;
+export default LawConsumer;

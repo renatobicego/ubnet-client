@@ -21,9 +21,21 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
+import EditBanner from "@/components/modals/banners/EditBanner";
 
 // Sortable banner item component
-const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
+const SortableBannerItem = ({
+  banner,
+  setIsEditing,
+}: {
+  banner: ImageBanner;
+  setIsEditing: Dispatch<
+    SetStateAction<{
+      editingOrder: boolean;
+      editingBannerModalOpen: boolean;
+    }>
+  >;
+}) => {
   const {
     attributes,
     listeners,
@@ -62,8 +74,13 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
           src={banner.imageUrl || "/placeholder.svg"}
           width={600}
         />
-        <CardFooter className="rounded-large shadow-small absolute bottom-1 z-10 ml-1 w-[calc(100%_-_8px)] justify-between overflow-hidden border-1 border-white/20 py-1 before:rounded-xl before:bg-white/10">
-          <p className="text-white/80">{banner.description}</p>
+        <CardFooter className="rounded-large shadow-small absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] items-center justify-between gap-2 overflow-hidden border-1 border-white/20 py-1 before:rounded-xl before:bg-white/10">
+          <menu className="flex items-center gap-2">
+            <EditBanner banner={banner} setIsEditing={setIsEditing} />
+          </menu>
+          <p className="flex-1 text-right text-white/80">
+            {banner.description}
+          </p>
         </CardFooter>
       </Card>
     </div>
@@ -83,7 +100,10 @@ const BannerVisualizer = ({
   loading,
   onRefresh,
 }: BannerVisualizerProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState({
+    editingOrder: false,
+    editingBannerModalOpen: false,
+  });
   // Set up sensors for drag detection
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -97,7 +117,10 @@ const BannerVisualizer = ({
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      setIsEditing(true);
+      setIsEditing({
+        ...isEditing,
+        editingOrder: true,
+      });
       onReorder((currentItems) => {
         const oldIndex = currentItems.findIndex(
           (item) => item._id === active.id,
@@ -131,17 +154,25 @@ const BannerVisualizer = ({
           <SortableContext
             items={banners.map((item) => item._id)}
             strategy={horizontalListSortingStrategy}
+            disabled={isEditing.editingBannerModalOpen}
           >
             {banners.map((banner) => (
-              <SortableBannerItem key={banner._id} banner={banner} />
+              <SortableBannerItem
+                key={banner._id}
+                banner={banner}
+                setIsEditing={setIsEditing}
+              />
             ))}
           </SortableContext>
         </article>
-        {isEditing && (
+        {isEditing.editingOrder && (
           <menu className="flex items-center gap-2">
             <PrimaryButton
               onPress={() => {
-                setIsEditing(false);
+                setIsEditing((prev) => ({
+                  ...prev,
+                  editingOrder: false,
+                }));
                 onRefresh();
               }}
               color="secondary"

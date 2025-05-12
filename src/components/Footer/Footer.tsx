@@ -3,10 +3,10 @@ import Image from "next/image";
 import PrimaryButton from "../buttons/PrimaryButton";
 import { Link } from "@heroui/react";
 import { FaPhone } from "react-icons/fa6";
-import ProtectPersonalData from "../modals/ProtectPersonalData";
-import TermsConditions from "../modals/TermsConditions";
-import LawConsumer from "../modals/LawConsumer";
-import RulesClientsTIC from "../modals/RulesClientsTIC";
+import ProtectPersonalData from "../modals/legals/ProtectPersonalData";
+import TermsConditions from "../modals/legals/TermsConditions";
+import LawConsumer from "../modals/legals/LawConsumer";
+import RulesClientsTIC from "../modals/legals/RulesClientsTIC";
 
 const Footer = () => {
   return (

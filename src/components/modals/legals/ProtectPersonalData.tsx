@@ -1,4 +1,4 @@
-import PrimaryButton from "../buttons/PrimaryButton";
+import PrimaryButton from "../../buttons/PrimaryButton";
 import CustomModal from "./CustomModal";
 
 const ProtectPersonalData = () => {
