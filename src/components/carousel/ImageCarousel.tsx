@@ -13,6 +13,13 @@ export type ImageBanner = {
   order: number;
   _id: string;
 };
+
+export type PostImageBanner = {
+  description: string;
+  imageUrl: string;
+  order: number;
+};
+
 interface ImageCarouselProps {
   images: ImageBanner[];
   autoPlay?: boolean;

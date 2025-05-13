@@ -1,25 +1,22 @@
-import { ImageBanner } from "@/components/carousel/ImageCarousel";
 import { UploadDropzone } from "@/utils/uploadthing";
 import { Form, Input } from "@heroui/react";
 import { Dispatch, SetStateAction, useState } from "react";
 
-const EditBannerForm = ({
-  banner,
+const CreateBannerForm = ({
   setIsNewImageUploaded,
   onSubmit,
 }: {
-  banner: ImageBanner;
   setIsNewImageUploaded: Dispatch<SetStateAction<string>>;
   onSubmit: (data: { description: string; image: string }) => Promise<void>;
 }) => {
   const [values, setValues] = useState({
-    description: banner.description,
-    image: banner.imageUrl,
+    description: "",
+    image: "",
   });
 
   return (
     <Form
-      id="edit-banner"
+      id="create-banner"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit(values);
@@ -30,8 +27,7 @@ const EditBannerForm = ({
         endpoint="imageUploader"
         content={{
           allowedContent: "Imagen 8Mb",
-          label:
-            "Selecciona una imagen o arrastra una aca para cambiar la anterior",
+          label: "Selecciona una imagen o arrastra una aca",
         }}
         className="w-full"
         onClientUploadComplete={(res) => {
@@ -68,4 +64,4 @@ const EditBannerForm = ({
   );
 };
 
-export default EditBannerForm;
+export default CreateBannerForm;

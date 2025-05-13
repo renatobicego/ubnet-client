@@ -1,5 +1,5 @@
 import {
-  Button,
+  addToast,
   Modal,
   ModalBody,
   ModalContent,
@@ -7,16 +7,15 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/react";
-import { FaPencil } from "react-icons/fa6";
 import PrimaryButton from "../../buttons/PrimaryButton";
-import { ImageBanner } from "../../carousel/ImageCarousel";
 import { useState } from "react";
 import { deleteFilesService } from "@/services/uploadthingServices";
-import EditBannerForm from "./EditBannerForm";
 import { useBannerContext } from "@/context/BannerContext";
+import CreateBannerForm from "./CreateBannerForm";
+import { createBanner } from "@/services/bannerServices";
 
-const EditBanner = ({ banner }: { banner: ImageBanner }) => {
-  const { setIsEditing, setBanners } = useBannerContext();
+const CreateBanner = () => {
+  const { setIsEditing, setBanners, banners } = useBannerContext();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [isNewImageUploaded, setIsNewImageUploaded] = useState("");
 
@@ -48,36 +47,36 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
   const onSubmit = async (data: { description: string; image: string }) => {
     if (isNewImageUploaded) {
       data.image = isNewImageUploaded;
+    } else {
+      addToast({
+        title: "Por favor, sube una imagen",
+        description: "No se pudo crear el banner.",
+        color: "danger",
+      });
+      return;
     }
-    setBanners((prev) =>
-      prev.map((b) => {
-        if (b._id === banner._id) {
-          return {
-            ...b,
-            description: data.description as string,
-            imageUrl: data.image as string,
-          };
-        }
-        return b;
-      }),
-    );
-    setIsEditing({
-      editingOrder: true,
-      editingBannerModalOpen: false,
-    });
-    onClose();
+    try {
+      const resData = await createBanner({
+        description: data.description,
+        imageUrl: data.image,
+        order: banners.length,
+      });
+      setBanners((prev) => [...prev, resData]);
+      onClose();
+    } catch {
+      addToast({
+        title: "Error al crear el banner",
+        description: "No se pudo crear el banner.",
+        color: "danger",
+      });
+      return;
+    }
   };
   return (
     <>
-      <Button
-        color="primary"
-        onPress={handleOpen}
-        isIconOnly
-        radius="full"
-        size="sm"
-      >
-        <FaPencil />
-      </Button>
+      <PrimaryButton onPress={handleOpen} className="mb-4">
+        Agregar banner
+      </PrimaryButton>
       <Modal
         classNames={{
           wrapper: "z-[1000]",
@@ -86,10 +85,9 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
         onOpenChange={onOpenChange}
       >
         <ModalContent>
-          <ModalHeader>Editar Banner</ModalHeader>
+          <ModalHeader>Agregar Banner</ModalHeader>
           <ModalBody>
-            <EditBannerForm
-              banner={banner}
+            <CreateBannerForm
               setIsNewImageUploaded={setIsNewImageUploaded}
               onSubmit={onSubmit}
             />
@@ -98,8 +96,8 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
             <PrimaryButton onPress={handleCancel} color="secondary">
               Cancelar
             </PrimaryButton>
-            <PrimaryButton type="submit" form="edit-banner">
-              Guardar Cambios
+            <PrimaryButton type="submit" form="create-banner">
+              Agregar Banner
             </PrimaryButton>
           </ModalFooter>
         </ModalContent>
@@ -108,4 +106,4 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
   );
 };
 
-export default EditBanner;
+export default CreateBanner;

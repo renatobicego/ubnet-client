@@ -1,8 +1,7 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
 import type { ImageBanner } from "@/components/carousel/ImageCarousel";
-import { Card, CardFooter, Image, Spinner } from "@heroui/react";
+import { addToast, Card, CardFooter, Image, Spinner } from "@heroui/react";
 import {
   DndContext,
   closestCenter,
@@ -22,20 +21,12 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import EditBanner from "@/components/modals/banners/EditBanner";
+import { useBannerContext } from "@/context/BannerContext";
+import { updateBanners } from "@/services/bannerServices";
 
 // Sortable banner item component
-const SortableBannerItem = ({
-  banner,
-  setIsEditing,
-}: {
-  banner: ImageBanner;
-  setIsEditing: Dispatch<
-    SetStateAction<{
-      editingOrder: boolean;
-      editingBannerModalOpen: boolean;
-    }>
-  >;
-}) => {
+const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
+  const { isEditing } = useBannerContext();
   const {
     attributes,
     listeners,
@@ -43,7 +34,10 @@ const SortableBannerItem = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: banner._id });
+  } = useSortable({
+    id: banner._id,
+    disabled: isEditing.editingBannerModalOpen,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -56,9 +50,13 @@ const SortableBannerItem = ({
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
-      className="min-w-[50%] cursor-grab active:cursor-grabbing"
+      {...(isEditing.editingBannerModalOpen ? {} : attributes)}
+      {...(isEditing.editingBannerModalOpen ? {} : listeners)}
+      className={`min-w-[50%] ${
+        isEditing.editingBannerModalOpen
+          ? "cursor-default"
+          : "cursor-grab active:cursor-grabbing"
+      }`}
     >
       <Card
         key={banner._id}
@@ -76,7 +74,7 @@ const SortableBannerItem = ({
         />
         <CardFooter className="rounded-large shadow-small absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] items-center justify-between gap-2 overflow-hidden border-1 border-white/20 py-1 before:rounded-xl before:bg-white/10">
           <menu className="flex items-center gap-2">
-            <EditBanner banner={banner} setIsEditing={setIsEditing} />
+            <EditBanner banner={banner} />
           </menu>
           <p className="flex-1 text-right text-white/80">
             {banner.description}
@@ -87,23 +85,15 @@ const SortableBannerItem = ({
   );
 };
 
-interface BannerVisualizerProps {
-  banners: ImageBanner[];
-  onReorder: Dispatch<SetStateAction<ImageBanner[]>>;
-  loading: boolean;
-  onRefresh: () => Promise<void>;
-}
-
-const BannerVisualizer = ({
-  banners,
-  onReorder,
-  loading,
-  onRefresh,
-}: BannerVisualizerProps) => {
-  const [isEditing, setIsEditing] = useState({
-    editingOrder: false,
-    editingBannerModalOpen: false,
-  });
+const BannerVisualizer = () => {
+  const {
+    isEditing,
+    fetchBanners: onRefresh,
+    setIsEditing,
+    setBanners: onReorder,
+    banners,
+    loading,
+  } = useBannerContext();
   // Set up sensors for drag detection
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -117,10 +107,11 @@ const BannerVisualizer = ({
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      setIsEditing({
-        ...isEditing,
+      setIsEditing((prev) => ({
+        ...prev,
         editingOrder: true,
-      });
+      }));
+
       onReorder((currentItems) => {
         const oldIndex = currentItems.findIndex(
           (item) => item._id === active.id,
@@ -137,6 +128,24 @@ const BannerVisualizer = ({
         return newOrder;
       });
     }
+  };
+
+  const handleSave = async () => {
+    try {
+      const resData = await updateBanners(banners);
+      onReorder(resData);
+    } catch {
+      addToast({
+        title: "Error al guardar los banners",
+        description: "No se pudo guardar el orden de los banners.",
+        color: "danger",
+      });
+      return;
+    }
+    setIsEditing((prev) => ({
+      ...prev,
+      editingOrder: false,
+    }));
   };
 
   if (loading) {
@@ -157,11 +166,7 @@ const BannerVisualizer = ({
             disabled={isEditing.editingBannerModalOpen}
           >
             {banners.map((banner) => (
-              <SortableBannerItem
-                key={banner._id}
-                banner={banner}
-                setIsEditing={setIsEditing}
-              />
+              <SortableBannerItem key={banner._id} banner={banner} />
             ))}
           </SortableContext>
         </article>
@@ -179,7 +184,7 @@ const BannerVisualizer = ({
             >
               Cancelar
             </PrimaryButton>
-            <PrimaryButton>Guardar Cambios</PrimaryButton>
+            <PrimaryButton onPress={handleSave}>Guardar Cambios</PrimaryButton>
           </menu>
         )}
       </div>
