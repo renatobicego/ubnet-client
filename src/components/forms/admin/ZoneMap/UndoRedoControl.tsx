@@ -1,7 +1,7 @@
 "use client";
 
 import { useMap } from "@vis.gl/react-google-maps";
-import { useCallback, type Dispatch } from "react";
+import { useCallback, useState, type Dispatch } from "react";
 import {
   type State,
   type Action,
@@ -29,6 +29,7 @@ export function UndoRedoControl({
   dispatch,
 }: UndoRedoControlProps) {
   const map = useMap();
+  const [isLoading, setIsLoading] = useState(false);
 
   useDeleteClickHandler(map, state.now, dispatch, isDeleteMode);
 
@@ -48,6 +49,7 @@ export function UndoRedoControl({
 
   const handleSubmit = async () => {
     // Handle save changes logic here
+    setIsLoading(true);
     try {
       const shapesToSave: ShapeData[] = state.now.map((shape) => ({
         _id: shape.dbId,
@@ -76,12 +78,19 @@ export function UndoRedoControl({
           : undefined,
       }));
       await updateShapes(shapesToSave);
+      addToast({
+        title: "Cobertura Actualizada",
+        description: "Las zonas han sido actualizadas correctamente",
+        color: "success",
+      });
     } catch {
       addToast({
         title: "Error",
         description: "Error al guardar los cambios",
         color: "danger",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,7 +113,9 @@ export function UndoRedoControl({
             <PrimaryButton
               size="sm"
               onPress={handleSubmit}
+              isDisabled={state.past.length === state.now.length || isLoading}
               title="save changes"
+              isLoading={isLoading}
             >
               Guardar Cambios
             </PrimaryButton>
