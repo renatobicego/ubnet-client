@@ -32,6 +32,8 @@ const DrawingMap = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, dispatch] = useReducer(reducer, {
     now: [],
+    past: [],
+    future: [],
   });
 
   // Set up event listeners and load shapes

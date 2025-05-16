@@ -22,21 +22,24 @@ export interface Overlay {
 }
 
 export interface State {
+  past: Overlay[][];
   now: Overlay[];
+  future: Overlay[][];
 }
 
 export interface DrawResult {
   type: google.maps.drawing.OverlayType;
   overlay: google.maps.Circle | google.maps.Polygon;
+  _id?: string; // MongoDB _id
 }
 
 export type Action =
   | { type: DrawingActionKind.UPDATE_OVERLAYS }
   | { type: DrawingActionKind.SET_OVERLAY; payload: DrawResult }
   | { type: DrawingActionKind.DELETE_OVERLAY; payload: { id: string } }
-  | { type: DrawingActionKind.UNDO }
-  | { type: DrawingActionKind.REDO }
-  | { type: DrawingActionKind.LOAD_SHAPES; payload: { shapes: ShapeData[] } };
+  | { type: DrawingActionKind.UNDO; payload: { map: google.maps.Map | null } }
+  | { type: DrawingActionKind.REDO; payload: { map: google.maps.Map | null } }
+  | { type: DrawingActionKind.LOAD_SHAPES; payload: { shapes: Overlay[] } };
 
 // MongoDB data models
 export interface CircleData {

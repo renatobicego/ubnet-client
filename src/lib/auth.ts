@@ -5,6 +5,7 @@ import { loginUser } from "@/services/authServices";
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 14 * 24 * 60 * 60, // 14 days in seconds
   },
   pages: {
     signIn: "/login",
@@ -57,5 +58,8 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+  },
+  jwt: {
+    maxAge: 14 * 24 * 60 * 60, // 30 days in seconds
   },
 };

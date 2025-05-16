@@ -32,6 +32,7 @@ export function useLoadShapes(
               payload: {
                 type: google.maps.drawing.OverlayType.CIRCLE,
                 overlay,
+                _id: shape._id,
               },
             });
           } else if (shape.type === "POLYGON" && shape.polygon) {
@@ -48,6 +49,7 @@ export function useLoadShapes(
               payload: {
                 type: google.maps.drawing.OverlayType.POLYGON,
                 overlay,
+                _id: shape._id,
               },
             });
           }
