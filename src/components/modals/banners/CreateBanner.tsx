@@ -17,7 +17,10 @@ import { createBanner } from "@/services/bannerServices";
 const CreateBanner = () => {
   const { setIsEditing, setBanners, banners } = useBannerContext();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const [isNewImageUploaded, setIsNewImageUploaded] = useState("");
+  const [isNewImageUploaded, setIsNewImageUploaded] = useState({
+    image: "",
+    imageMobile: "",
+  });
 
   const handleOpen = () => {
     onOpen();
@@ -28,14 +31,20 @@ const CreateBanner = () => {
   };
 
   const handleCancel = async () => {
-    if (isNewImageUploaded) {
+    if (isNewImageUploaded.image || isNewImageUploaded.imageMobile) {
       // Delete the new image
       try {
-        await deleteFilesService([isNewImageUploaded]);
+        await deleteFilesService([
+          isNewImageUploaded.image,
+          isNewImageUploaded.imageMobile,
+        ]);
       } catch (error) {
         console.error("Error deleting file:", error);
       }
-      setIsNewImageUploaded("");
+      setIsNewImageUploaded({
+        image: "",
+        imageMobile: "",
+      });
     }
     setIsEditing((prev) => ({
       ...prev,
@@ -44,9 +53,14 @@ const CreateBanner = () => {
     onClose();
   };
 
-  const onSubmit = async (data: { description: string; image: string }) => {
-    if (isNewImageUploaded) {
-      data.image = isNewImageUploaded;
+  const onSubmit = async (data: {
+    description: string;
+    image: string;
+    imageMobile?: string;
+  }) => {
+    if (isNewImageUploaded.image) {
+      data.image = isNewImageUploaded.image;
+      data.imageMobile = isNewImageUploaded.imageMobile;
     } else {
       addToast({
         title: "Por favor, sube una imagen",
@@ -59,6 +73,7 @@ const CreateBanner = () => {
       const resData = await createBanner({
         description: data.description,
         imageUrl: data.image,
+        mobileImageUrl: data.imageMobile,
         order: banners.length,
       });
       setBanners((prev) => [...prev, resData]);

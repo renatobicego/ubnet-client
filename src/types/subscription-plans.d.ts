@@ -20,3 +20,8 @@ export interface Zone {
   label: string;
   plans: SubscriptionPlan[];
 }
+
+export interface PostZone {
+  label: string;
+  plans: string[];
+}

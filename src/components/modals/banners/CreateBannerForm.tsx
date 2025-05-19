@@ -1,17 +1,23 @@
 import { UploadDropzone } from "@/utils/uploadthing";
-import { Form, Input } from "@heroui/react";
+import { addToast, Form, Input } from "@heroui/react";
 import { Dispatch, SetStateAction, useState } from "react";
 
 const CreateBannerForm = ({
   setIsNewImageUploaded,
   onSubmit,
 }: {
-  setIsNewImageUploaded: Dispatch<SetStateAction<string>>;
+  setIsNewImageUploaded: Dispatch<
+    SetStateAction<{
+      image: string;
+      imageMobile: string;
+    }>
+  >;
   onSubmit: (data: { description: string; image: string }) => Promise<void>;
 }) => {
   const [values, setValues] = useState({
     description: "",
     image: "",
+    imageMobile: "",
   });
 
   return (
@@ -27,26 +33,50 @@ const CreateBannerForm = ({
         endpoint="imageUploader"
         content={{
           allowedContent: "Imagen 8Mb",
-          label: "Selecciona una imagen o arrastra una aca",
+          label: "Selecciona una imagen o arrastra una aca. Aspecto 3/1",
         }}
         className="w-full"
         onClientUploadComplete={(res) => {
-          setIsNewImageUploaded(res[0].fileHash);
+          setIsNewImageUploaded((prev) => ({
+            ...prev,
+            image: res[0].fileHash,
+          }));
           setValues((prevValues) => ({
             ...prevValues,
             image: res[0].fileHash,
           }));
         }}
         onUploadError={(error: Error) => {
-          alert(`ERROR! ${error.message}`);
+          addToast({
+            title: "Error al subir la imagen",
+            color: "danger",
+            description: error.message,
+          });
         }}
-        onUploadBegin={(name) => {
-          // Do something once upload begins
-          console.log("Uploading: ", name);
+      />
+      <UploadDropzone
+        endpoint="imageUploader"
+        content={{
+          allowedContent: "Imagen 8Mb",
+          label: "Selecciona una imagen o arrastra una aca. Aspecto 16/9",
         }}
-        onChange={(acceptedFiles) => {
-          // Do something with the accepted files
-          console.log("Accepted files: ", acceptedFiles);
+        className="w-full"
+        onClientUploadComplete={(res) => {
+          setIsNewImageUploaded((prev) => ({
+            ...prev,
+            imageMobile: res[0].fileHash,
+          }));
+          setValues((prevValues) => ({
+            ...prevValues,
+            imageMobile: res[0].fileHash,
+          }));
+        }}
+        onUploadError={(error: Error) => {
+          addToast({
+            title: "Error al subir la imagen",
+            color: "danger",
+            description: error.message,
+          });
         }}
       />
       <Input

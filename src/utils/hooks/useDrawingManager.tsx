@@ -17,7 +17,7 @@ export function useDrawingManager(
     // https://developers.google.com/maps/documentation/javascript/reference/drawing
     const newDrawingManager = new drawing.DrawingManager({
       map,
-      drawingMode: isDeleteMode ? null : google.maps.drawing.OverlayType.CIRCLE,
+      drawingMode: null,
       drawingControl: !isDeleteMode,
       drawingControlOptions: {
         position: google.maps.ControlPosition.BOTTOM_CENTER,

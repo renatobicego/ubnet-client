@@ -1,11 +1,12 @@
 "use client";
 
-import { Tabs, Tab, Card, CardBody } from "@heroui/react";
+import { Tabs, Tab } from "@heroui/react";
 import { useState, useCallback, useEffect } from "react";
 import BannerTab from "./Banner/BannerTab";
 import { BannerProvider } from "@/context/BannerContext";
 import ZoneMapForm from "./ZoneMap/ZoneMapForm";
 import { MapSetup } from "@/components/maps/ZonesMap";
+import PlanZonesTab from "./PlanZones/PlanZonesTab";
 
 const TabsForms = () => {
   const [selectedTab, setSelectedTab] = useState("banners");
@@ -65,7 +66,10 @@ const TabsForms = () => {
   }, [isEditing]);
 
   return (
-    <section className="w-full rounded-lg bg-white p-4">
+    <section
+      data-observe
+      className="light-section w-full rounded-lg bg-white p-4"
+    >
       <Tabs
         aria-label="Opciones de administración"
         selectedKey={selectedTab}
@@ -81,13 +85,8 @@ const TabsForms = () => {
             <ZoneMapForm onEditingChange={updateEditingState} />
           </MapSetup>
         </Tab>
-        <Tab key="videos" title="Videos">
-          <Card>
-            <CardBody>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit anim id est laborum.
-            </CardBody>
-          </Card>
+        <Tab key="zones" title="Zonas">
+          <PlanZonesTab />
         </Tab>
       </Tabs>
     </section>

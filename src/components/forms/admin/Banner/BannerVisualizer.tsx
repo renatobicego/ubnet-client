@@ -1,7 +1,14 @@
 "use client";
 
 import type { ImageBanner } from "@/components/carousel/ImageCarousel";
-import { addToast, Card, CardFooter, Image, Spinner } from "@heroui/react";
+import {
+  addToast,
+  Button,
+  Card,
+  CardFooter,
+  Image,
+  Spinner,
+} from "@heroui/react";
 import {
   DndContext,
   closestCenter,
@@ -23,6 +30,7 @@ import PrimaryButton from "@/components/buttons/PrimaryButton";
 import EditBanner from "@/components/modals/banners/EditBanner";
 import { useBannerContext } from "@/context/BannerContext";
 import { updateBanners } from "@/services/bannerServices";
+import { FaTrash } from "react-icons/fa6";
 
 // Sortable banner item component
 const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
@@ -52,7 +60,7 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
       style={style}
       {...(isEditing.editingBannerModalOpen ? {} : attributes)}
       {...(isEditing.editingBannerModalOpen ? {} : listeners)}
-      className={`min-w-[50%] ${
+      className={`min-w-[60%] ${
         isEditing.editingBannerModalOpen
           ? "cursor-default"
           : "cursor-grab active:cursor-grabbing"
@@ -64,17 +72,36 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
         className="border-none"
         radius="lg"
       >
-        <Image
-          alt={banner.description}
-          className="aspect-video w-full object-cover"
-          height={300}
-          removeWrapper
-          src={banner.imageUrl || "/placeholder.svg"}
-          width={600}
-        />
+        <div className="relative mb-1 w-full">
+          <Image
+            alt={banner.description}
+            className="aspect-[3/1] w-full object-cover"
+            removeWrapper
+            src={banner.imageUrl || "/placeholder.svg"}
+          />
+          <p className="shadow-small rounded-large absolute top-2 left-2 z-10 border-white/20 px-2 py-1 text-xs text-black backdrop-blur-2xl">
+            Imagen en formato computadora
+          </p>
+        </div>
+        {banner.mobileImageUrl && (
+          <div className="relative w-full">
+            <Image
+              alt={banner.description}
+              className="aspect-video w-full object-cover"
+              removeWrapper
+              src={banner.mobileImageUrl || "/placeholder.svg"}
+            />
+            <p className="shadow-small rounded-large absolute top-2 left-2 z-10 border-white/20 px-2 py-1 text-xs text-black backdrop-blur-2xl">
+              Imagen en formato teléfono
+            </p>
+          </div>
+        )}
         <CardFooter className="rounded-large shadow-small absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] items-center justify-between gap-2 overflow-hidden border-1 border-white/20 py-1 before:rounded-xl before:bg-white/10">
           <menu className="flex items-center gap-2">
             <EditBanner banner={banner} />
+            <Button isIconOnly radius="full" color="danger">
+              <FaTrash />
+            </Button>
           </menu>
           <p className="flex-1 text-right text-white/80">
             {banner.description}
@@ -159,7 +186,7 @@ const BannerVisualizer = () => {
       onDragEnd={handleDragEnd}
     >
       <div className="flex w-full flex-col items-end justify-between gap-4">
-        <article className="flex w-full items-center justify-between gap-4 overflow-x-auto p-2">
+        <article className="flex w-full items-start justify-between gap-4 overflow-x-auto p-2">
           <SortableContext
             items={banners.map((item) => item._id)}
             strategy={horizontalListSortingStrategy}

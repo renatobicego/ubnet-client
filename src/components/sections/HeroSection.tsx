@@ -6,7 +6,7 @@ const HeroSection = () => {
   return (
     <section
       data-observe={true}
-      className="flex min-h-[400px] w-full flex-col items-start gap-4 py-10 text-white md:py-20"
+      className="flex min-h-[300px] w-full flex-col items-start gap-4 py-10 text-white"
     >
       <h1 className="!font-eurostile">Creando Conexiones</h1>
       <h2 className="title-3">

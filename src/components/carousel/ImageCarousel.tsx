@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Button, Image } from "@heroui/react";
+import useIsMobile from "@/utils/hooks/useIsMobile";
 
 export type ImageBanner = {
   description: string;
-  imageUrl: string;
+  imageUrl: string; // Default image (desktop)
+  mobileImageUrl?: string; // Optional mobile image
   isActive: boolean;
   order: number;
   _id: string;
@@ -18,6 +20,7 @@ export type PostImageBanner = {
   description: string;
   imageUrl: string;
   order: number;
+  mobileImageUrl?: string;
 };
 
 interface ImageCarouselProps {
@@ -37,6 +40,7 @@ export default function ImageCarousel({
 }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const isMobile = useIsMobile();
 
   const slideVariants = {
     hiddenRight: {
@@ -115,10 +119,10 @@ export default function ImageCarousel({
     <section
       id="avisos"
       data-observe={true}
-      className={`relative max-h-[80vh] w-full overflow-hidden rounded-2xl md:rounded-4xl ${className}`}
+      className={`relative w-full overflow-hidden rounded-2xl md:rounded-4xl ${className}`}
       {...handlers}
     >
-      <div className="aspect-video w-full">
+      <div className="aspect-video w-full md:aspect-[3/1]">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -130,7 +134,11 @@ export default function ImageCarousel({
             className="absolute h-full w-full"
           >
             <Image
-              src={images[currentIndex].imageUrl}
+              src={
+                isMobile && images[currentIndex].mobileImageUrl
+                  ? images[currentIndex].mobileImageUrl
+                  : images[currentIndex].imageUrl
+              }
               alt={`Imagen ${currentIndex}: ${images[currentIndex].description}`}
               className="h-full w-full object-cover"
               removeWrapper
