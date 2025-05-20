@@ -6,6 +6,7 @@ import { useSwipeable } from "react-swipeable";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Button, Image } from "@heroui/react";
 import useIsMobile from "@/utils/hooks/useIsMobile";
+import { UT_URL } from "@/utils/urls";
 
 export type ImageBanner = {
   description: string;
@@ -134,11 +135,13 @@ export default function ImageCarousel({
             className="absolute h-full w-full"
           >
             <Image
-              src={
-                isMobile && images[currentIndex].mobileImageUrl
-                  ? images[currentIndex].mobileImageUrl
-                  : images[currentIndex].imageUrl
-              }
+              src={`${UT_URL}
+                ${
+                  isMobile && images[currentIndex].mobileImageUrl
+                    ? images[currentIndex].mobileImageUrl
+                    : images[currentIndex].imageUrl
+                }
+                `}
               alt={`Imagen ${currentIndex}: ${images[currentIndex].description}`}
               className="h-full w-full object-cover"
               removeWrapper

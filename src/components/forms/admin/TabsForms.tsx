@@ -7,6 +7,8 @@ import { BannerProvider } from "@/context/BannerContext";
 import ZoneMapForm from "./ZoneMap/ZoneMapForm";
 import { MapSetup } from "@/components/maps/ZonesMap";
 import PlanZonesTab from "./PlanZones/PlanZonesTab";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import { signOut } from "next-auth/react";
 
 const TabsForms = () => {
   const [selectedTab, setSelectedTab] = useState("banners");
@@ -68,8 +70,11 @@ const TabsForms = () => {
   return (
     <section
       data-observe
-      className="light-section w-full rounded-lg bg-white p-4"
+      className="light-section flex w-full flex-col rounded-lg bg-white p-4"
     >
+      <PrimaryButton className="self-end" onPress={() => signOut()}>
+        Cerrar Sesión
+      </PrimaryButton>
       <Tabs
         aria-label="Opciones de administración"
         selectedKey={selectedTab}

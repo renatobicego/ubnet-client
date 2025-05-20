@@ -58,6 +58,14 @@ const CreateBanner = () => {
     image: string;
     imageMobile?: string;
   }) => {
+    if (!data.description) {
+      addToast({
+        title: "Por favor, ingresa una descripción",
+        description: "No se pudo crear el banner.",
+        color: "danger",
+      });
+      return;
+    }
     if (isNewImageUploaded.image) {
       data.image = isNewImageUploaded.image;
       data.imageMobile = isNewImageUploaded.imageMobile;
@@ -97,6 +105,7 @@ const CreateBanner = () => {
           wrapper: "z-[1000]",
         }}
         isOpen={isOpen}
+        size="3xl"
         onOpenChange={onOpenChange}
       >
         <ModalContent>
@@ -105,6 +114,7 @@ const CreateBanner = () => {
             <CreateBannerForm
               setIsNewImageUploaded={setIsNewImageUploaded}
               onSubmit={onSubmit}
+              isNewImageUploaded={isNewImageUploaded}
             />
           </ModalBody>
           <ModalFooter>

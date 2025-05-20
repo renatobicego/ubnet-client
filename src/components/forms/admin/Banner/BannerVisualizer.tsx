@@ -29,8 +29,10 @@ import { CSS } from "@dnd-kit/utilities";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import EditBanner from "@/components/modals/banners/EditBanner";
 import { useBannerContext } from "@/context/BannerContext";
-import { updateBanners } from "@/services/bannerServices";
+import { deleteBanner, updateBanners } from "@/services/bannerServices";
 import { FaTrash } from "react-icons/fa6";
+import { UT_URL } from "@/utils/urls";
+import { deleteFilesService } from "@/services/uploadthingServices";
 
 // Sortable banner item component
 const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
@@ -52,6 +54,29 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
     transition,
     zIndex: isDragging ? 10 : 1,
     opacity: isDragging ? 0.8 : 1,
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = confirm(
+      "¿Estás seguro de que deseas borrar este banner?",
+    );
+    if (!confirmDelete) return;
+    try {
+      await deleteBanner(banner._id);
+      addToast({
+        title: "Banner borrado",
+        description: "El banner ha sido borrado con éxito.",
+        color: "success",
+      });
+    } catch {
+      addToast({
+        title: "Error al borrar el banner",
+        description: "No se pudo borrar el banner. Inténtalo de nuevo.",
+        color: "danger",
+      });
+    }
+    deleteFilesService([banner.imageUrl, banner.mobileImageUrl || ""]);
+    return;
   };
 
   return (
@@ -77,9 +102,9 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
             alt={banner.description}
             className="aspect-[3/1] w-full object-cover"
             removeWrapper
-            src={banner.imageUrl || "/placeholder.svg"}
+            src={`${UT_URL}/${banner.imageUrl}`}
           />
-          <p className="shadow-small rounded-large absolute top-2 left-2 z-10 border-white/20 px-2 py-1 text-xs text-black backdrop-blur-2xl">
+          <p className="shadow-small rounded-large absolute top-2 left-2 z-10 border-white/20 bg-white/60 px-2 py-1 text-xs text-black backdrop-blur-2xl">
             Imagen en formato computadora
           </p>
         </div>
@@ -89,9 +114,9 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
               alt={banner.description}
               className="aspect-video w-full object-cover"
               removeWrapper
-              src={banner.mobileImageUrl || "/placeholder.svg"}
+              src={`${UT_URL}/${banner.mobileImageUrl}`}
             />
-            <p className="shadow-small rounded-large absolute top-2 left-2 z-10 border-white/20 px-2 py-1 text-xs text-black backdrop-blur-2xl">
+            <p className="shadow-small rounded-large absolute top-2 left-2 z-10 border-white/20 bg-white/60 px-2 py-1 text-xs text-black backdrop-blur-2xl">
               Imagen en formato teléfono
             </p>
           </div>
@@ -99,7 +124,12 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
         <CardFooter className="rounded-large shadow-small absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] items-center justify-between gap-2 overflow-hidden border-1 border-white/20 py-1 before:rounded-xl before:bg-white/10">
           <menu className="flex items-center gap-2">
             <EditBanner banner={banner} />
-            <Button isIconOnly radius="full" color="danger">
+            <Button
+              onPress={handleDelete}
+              isIconOnly
+              radius="full"
+              color="danger"
+            >
               <FaTrash />
             </Button>
           </menu>

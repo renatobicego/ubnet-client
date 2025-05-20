@@ -5,6 +5,9 @@ import { Providers } from "./providers";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import WhatsappButton from "@/components/buttons/WhatsappButton";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 
 const Eurostile = localFont({
   src: [
@@ -50,6 +53,7 @@ export default function RootLayout({
         className={`${HelveticaNeue.variable} ${Eurostile.variable} layout relative w-screen overflow-x-hidden antialiased`}
       >
         <Providers>
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Header />
           {children}
           <WhatsappButton />

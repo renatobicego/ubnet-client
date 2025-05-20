@@ -1,4 +1,5 @@
 import {
+  addToast,
   Button,
   Modal,
   ModalBody,
@@ -18,7 +19,10 @@ import { useBannerContext } from "@/context/BannerContext";
 const EditBanner = ({ banner }: { banner: ImageBanner }) => {
   const { setIsEditing, setBanners } = useBannerContext();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const [isNewImageUploaded, setIsNewImageUploaded] = useState("");
+  const [isNewImageUploaded, setIsNewImageUploaded] = useState({
+    image: "",
+    imageMobile: "",
+  });
 
   const handleOpen = () => {
     onOpen();
@@ -29,14 +33,20 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
   };
 
   const handleCancel = async () => {
-    if (isNewImageUploaded) {
+    if (isNewImageUploaded.image || isNewImageUploaded.imageMobile) {
       // Delete the new image
       try {
-        await deleteFilesService([isNewImageUploaded]);
+        await deleteFilesService([
+          isNewImageUploaded.image,
+          isNewImageUploaded.imageMobile,
+        ]);
       } catch (error) {
         console.error("Error deleting file:", error);
       }
-      setIsNewImageUploaded("");
+      setIsNewImageUploaded({
+        image: "",
+        imageMobile: "",
+      });
     }
     setIsEditing((prev) => ({
       ...prev,
@@ -45,10 +55,26 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
     onClose();
   };
 
-  const onSubmit = async (data: { description: string; image: string }) => {
-    if (isNewImageUploaded) {
-      data.image = isNewImageUploaded;
+  const onSubmit = async (data: {
+    description: string;
+    image: string;
+    imageMobile: string;
+  }) => {
+    if (!data.description) {
+      addToast({
+        title: "Por favor, ingresa una descripción",
+        description: "No se pudo editar el banner.",
+        color: "danger",
+      });
+      return;
     }
+    if (isNewImageUploaded.image) {
+      data.image = isNewImageUploaded.image;
+    }
+    if (isNewImageUploaded.imageMobile) {
+      data.imageMobile = isNewImageUploaded.imageMobile;
+    }
+
     setBanners((prev) =>
       prev.map((b) => {
         if (b._id === banner._id) {
@@ -56,6 +82,7 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
             ...b,
             description: data.description as string,
             imageUrl: data.image as string,
+            mobileImageUrl: data.imageMobile as string,
           };
         }
         return b;
@@ -82,6 +109,7 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
         classNames={{
           wrapper: "z-[1000]",
         }}
+        size="2xl"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
@@ -92,6 +120,7 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
               banner={banner}
               setIsNewImageUploaded={setIsNewImageUploaded}
               onSubmit={onSubmit}
+              isNewImageUploaded={isNewImageUploaded}
             />
           </ModalBody>
           <ModalFooter>
