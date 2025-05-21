@@ -3,8 +3,15 @@ import { planTypesLabel } from "@/utils/itemsData";
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
 import { FaTrash } from "react-icons/fa6";
 import PlanZoneModal from "../modals/planZones/PlanZoneModal";
+import { Dispatch, SetStateAction } from "react";
 
-const AdminPlanZoneCard = ({ zone }: { zone: Zone }) => {
+const AdminPlanZoneCard = ({
+  zone,
+  setZones,
+}: {
+  zone: Zone;
+  setZones: Dispatch<SetStateAction<Zone[]>>;
+}) => {
   return (
     <Card className="col-span-1">
       <CardHeader>
@@ -23,7 +30,7 @@ const AdminPlanZoneCard = ({ zone }: { zone: Zone }) => {
         </ul>
       </CardBody>
       <CardFooter className="gap-2">
-        <PlanZoneModal editData={zone} />
+        <PlanZoneModal editData={zone} setZones={setZones} />
         <Button isIconOnly radius="full" color="danger" variant="flat">
           <FaTrash />
         </Button>

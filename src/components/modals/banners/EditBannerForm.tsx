@@ -48,7 +48,8 @@ const EditBannerForm = ({
           endpoint="imageUploader"
           content={{
             allowedContent: "Imagen 8Mb",
-            label: "Selecciona una imagen o arrastra una aca. Aspecto 3/1",
+            label:
+              "Selecciona una imagen o arrastra una aca. Aspecto 3/1 para computadoras",
             button: "Subir imagen",
           }}
           className="ut-button:ut-ready:bg-primary ut-button:ut-readying:bg-primary/60 ut-uploading:cursor-not-allowed ut-button:px-4 flex-1"
@@ -83,6 +84,8 @@ const EditBannerForm = ({
           <Image
             src={`${UT_URL}/${isNewImageUploaded.image}`}
             alt="Imagen subida"
+            removeWrapper
+            className="aspect-[3/1]"
             width={300}
             height={100}
           />
@@ -93,7 +96,8 @@ const EditBannerForm = ({
           endpoint="imageUploader"
           content={{
             allowedContent: "Imagen 8Mb",
-            label: "Selecciona una imagen o arrastra una aca. Aspecto 16/9",
+            label:
+              "Selecciona una imagen o arrastra una aca. Aspecto 16/9 para teléfonos",
             button: "Subir imagen",
           }}
           className="ut-button:ut-ready:bg-primary ut-button:ut-readying:bg-primary/60 ut-uploading:cursor-not-allowed ut-button:px-4 flex-1"
@@ -126,7 +130,8 @@ const EditBannerForm = ({
           <Image
             src={`${UT_URL}/${isNewImageUploaded.imageMobile}`}
             alt="Imagen subida"
-            className="w-full"
+            className="aspect-video"
+            removeWrapper
             width={300}
             height={169}
           />

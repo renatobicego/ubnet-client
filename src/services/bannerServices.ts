@@ -12,6 +12,11 @@ export const getAllBanners = async () => {
   try {
     const { data }: { data: ImageBanner[] } = await axios.get(
       `${API_URL}/banner/all`,
+      {
+        fetchOptions: {
+          cache: "no-cache",
+        },
+      },
     );
     return data;
   } catch (error) {
@@ -60,6 +65,7 @@ export const updateBanners = async (
 
 export const deleteBanner = async (id: string) => {
   try {
+    console.log(id);
     await axios.delete(`${API_URL}/banner/${id}`, {
       headers: {
         "Content-Type": "application/json",

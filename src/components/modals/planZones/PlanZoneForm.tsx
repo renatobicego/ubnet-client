@@ -1,5 +1,5 @@
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-import { getPlans } from "@/services/planServices";
+import { createZone, getPlans, updateZone } from "@/services/planServices";
 import { PostZone, SubscriptionPlan, Zone } from "@/types/subscription-plans";
 import { planTypesLabel } from "@/utils/itemsData";
 import {
@@ -10,14 +10,22 @@ import {
   SelectItem,
   SharedSelection,
 } from "@heroui/react";
-import { FormEvent, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 const PlanZoneForm = ({
   editData,
   onClose,
+  setZones,
 }: {
   editData?: Zone;
   onClose: () => void;
+  setZones: Dispatch<SetStateAction<Zone[]>>;
 }) => {
   const [values, setValues] = useState<PostZone>({
     label: editData ? editData.label : "",
@@ -27,6 +35,7 @@ const PlanZoneForm = ({
     new Set(editData ? editData.plans.map((plan) => plan._id) : []),
   );
   const [plans, setPlans] = useState<SubscriptionPlan[]>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -37,6 +46,7 @@ const PlanZoneForm = ({
   }, []);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setIsSubmitting(true);
     e.preventDefault();
     const plansUpdated = Array.from(plansSelected) as string[];
     if (plansUpdated.length === 0) {
@@ -45,6 +55,7 @@ const PlanZoneForm = ({
         description: "Debe seleccionar al menos un plan",
         color: "danger",
       });
+      setIsSubmitting(false);
       return;
     }
     if (values.label.trim().length === 0) {
@@ -53,9 +64,43 @@ const PlanZoneForm = ({
         description: "El nombre de la zona/localidad no puede estar vacío",
         color: "danger",
       });
+      setIsSubmitting(false);
       return;
     }
-    setValues({ ...values, plans: plansUpdated });
+
+    try {
+      if (editData) {
+        const updatedZone = await updateZone(editData._id, values);
+        setZones((prevZones) =>
+          prevZones.map((zone) =>
+            zone._id === updatedZone._id ? updatedZone : zone,
+          ),
+        );
+        addToast({
+          title: "Zona actualizada",
+          description: "La zona ha sido actualizada con éxito",
+          color: "success",
+        });
+        onClose();
+      } else {
+        const newZone = await createZone(values);
+        setZones((prevZones) => [...prevZones, newZone]);
+        addToast({
+          title: "Zona creada",
+          description: "La zona ha sido creada con éxito",
+          color: "success",
+        });
+        onClose();
+      }
+    } catch {
+      addToast({
+        title: "Error al crear/editar la zona",
+        description: "No se pudo crear/editar la zona. Inténtalo de nuevo",
+        color: "danger",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <Form className="flex flex-col gap-2" onSubmit={onSubmit}>
@@ -98,7 +143,13 @@ const PlanZoneForm = ({
         <PrimaryButton onPress={onClose} color="secondary">
           Cancelar
         </PrimaryButton>
-        <PrimaryButton type="submit">Guardar</PrimaryButton>
+        <PrimaryButton
+          isLoading={isSubmitting}
+          isDisabled={isSubmitting}
+          type="submit"
+        >
+          Guardar
+        </PrimaryButton>
       </menu>
     </Form>
   );

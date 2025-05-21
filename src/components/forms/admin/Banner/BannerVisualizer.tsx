@@ -33,6 +33,7 @@ import { deleteBanner, updateBanners } from "@/services/bannerServices";
 import { FaTrash } from "react-icons/fa6";
 import { UT_URL } from "@/utils/urls";
 import { deleteFilesService } from "@/services/uploadthingServices";
+import { useState } from "react";
 
 // Sortable banner item component
 const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
@@ -96,6 +97,9 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
         isFooterBlurred
         className="border-none"
         radius="lg"
+        classNames={{
+          footer: "bg-white/60 ",
+        }}
       >
         <div className="relative mb-1 w-full">
           <Image
@@ -133,9 +137,7 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
               <FaTrash />
             </Button>
           </menu>
-          <p className="flex-1 text-right text-white/80">
-            {banner.description}
-          </p>
+          <p className="flex-1 text-right text-black">{banner.description}</p>
         </CardFooter>
       </Card>
     </div>
@@ -151,6 +153,7 @@ const BannerVisualizer = () => {
     banners,
     loading,
   } = useBannerContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // Set up sensors for drag detection
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -188,9 +191,14 @@ const BannerVisualizer = () => {
   };
 
   const handleSave = async () => {
+    setIsSubmitting(true);
     try {
       const resData = await updateBanners(banners);
       onReorder(resData);
+      setIsEditing((prev) => ({
+        ...prev,
+        editingOrder: false,
+      }));
     } catch {
       addToast({
         title: "Error al guardar los banners",
@@ -198,11 +206,9 @@ const BannerVisualizer = () => {
         color: "danger",
       });
       return;
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsEditing((prev) => ({
-      ...prev,
-      editingOrder: false,
-    }));
   };
 
   if (loading) {
@@ -241,7 +247,13 @@ const BannerVisualizer = () => {
             >
               Cancelar
             </PrimaryButton>
-            <PrimaryButton onPress={handleSave}>Guardar Cambios</PrimaryButton>
+            <PrimaryButton
+              isLoading={isSubmitting}
+              isDisabled={isSubmitting}
+              onPress={handleSave}
+            >
+              Guardar Cambios
+            </PrimaryButton>
           </menu>
         )}
       </div>

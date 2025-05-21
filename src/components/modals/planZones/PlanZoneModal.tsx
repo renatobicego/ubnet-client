@@ -10,8 +10,15 @@ import {
 } from "@heroui/react";
 import { FaPencil } from "react-icons/fa6";
 import PlanZoneForm from "./PlanZoneForm";
+import { Dispatch, SetStateAction } from "react";
 
-const PlanZoneModal = ({ editData }: { editData?: Zone }) => {
+const PlanZoneModal = ({
+  editData,
+  setZones,
+}: {
+  editData?: Zone;
+  setZones: Dispatch<SetStateAction<Zone[]>>;
+}) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   return (
     <>
@@ -28,7 +35,11 @@ const PlanZoneModal = ({ editData }: { editData?: Zone }) => {
             {editData ? `Editar Zona: ${editData.label}` : "Crear Zona"}
           </ModalHeader>
           <ModalBody>
-            <PlanZoneForm editData={editData} onClose={onClose} />
+            <PlanZoneForm
+              editData={editData}
+              onClose={onClose}
+              setZones={setZones}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>

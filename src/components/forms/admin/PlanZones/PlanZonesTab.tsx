@@ -25,10 +25,10 @@ const PlanZonesTab = () => {
   return (
     <section className="flex w-full flex-col items-start gap-4">
       <h3 className="title-3">Zonas de Planes</h3>
-      <PlanZoneModal />
+      <PlanZoneModal setZones={setZones} />
       <div className="grid w-full grid-cols-4 gap-2">
         {zones.map((zone) => (
-          <AdminPlanZoneCard key={zone._id} zone={zone} />
+          <AdminPlanZoneCard key={zone._id} zone={zone} setZones={setZones} />
         ))}
       </div>
     </section>

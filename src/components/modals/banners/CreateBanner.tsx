@@ -21,6 +21,7 @@ const CreateBanner = () => {
     image: "",
     imageMobile: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOpen = () => {
     onOpen();
@@ -58,12 +59,14 @@ const CreateBanner = () => {
     image: string;
     imageMobile?: string;
   }) => {
+    setIsLoading(true);
     if (!data.description) {
       addToast({
         title: "Por favor, ingresa una descripción",
         description: "No se pudo crear el banner.",
         color: "danger",
       });
+      setIsLoading(false);
       return;
     }
     if (isNewImageUploaded.image) {
@@ -75,6 +78,7 @@ const CreateBanner = () => {
         description: "No se pudo crear el banner.",
         color: "danger",
       });
+      setIsLoading(false);
       return;
     }
     try {
@@ -85,6 +89,10 @@ const CreateBanner = () => {
         order: banners.length,
       });
       setBanners((prev) => [...prev, resData]);
+      addToast({
+        title: "Banner creado",
+        color: "success",
+      });
       onClose();
     } catch {
       addToast({
@@ -93,6 +101,8 @@ const CreateBanner = () => {
         color: "danger",
       });
       return;
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -121,7 +131,12 @@ const CreateBanner = () => {
             <PrimaryButton onPress={handleCancel} color="secondary">
               Cancelar
             </PrimaryButton>
-            <PrimaryButton type="submit" form="create-banner">
+            <PrimaryButton
+              isLoading={isLoading}
+              isDisabled={isLoading}
+              type="submit"
+              form="create-banner"
+            >
               Agregar Banner
             </PrimaryButton>
           </ModalFooter>
