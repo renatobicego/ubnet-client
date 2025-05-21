@@ -37,7 +37,7 @@ import { useState } from "react";
 
 // Sortable banner item component
 const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
-  const { isEditing } = useBannerContext();
+  const { isEditing, setBanners } = useBannerContext();
   const {
     attributes,
     listeners,
@@ -69,6 +69,10 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
         description: "El banner ha sido borrado con éxito.",
         color: "success",
       });
+      setBanners((prevBanners) =>
+        prevBanners.filter((b) => b._id !== banner._id),
+      );
+      deleteFilesService([banner.imageUrl, banner.mobileImageUrl || ""]);
     } catch {
       addToast({
         title: "Error al borrar el banner",
@@ -76,7 +80,6 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
         color: "danger",
       });
     }
-    deleteFilesService([banner.imageUrl, banner.mobileImageUrl || ""]);
     return;
   };
 
