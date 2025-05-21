@@ -1,5 +1,5 @@
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-import { Zone } from "@/types/subscription-plans";
+import { SubscriptionPlan } from "@/types/subscription-plans";
 import {
   Button,
   Modal,
@@ -9,15 +9,15 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { FaPencil } from "react-icons/fa6";
-import PlanZoneForm from "../../forms/admin/PlanZones/PlanZoneForm";
 import { Dispatch, SetStateAction } from "react";
+import PlanForm from "@/components/forms/admin/Plans/PlanForm";
 
-const PlanZoneModal = ({
+const PlanFormModal = ({
   editData,
-  setZones,
+  setPlans,
 }: {
-  editData?: Zone;
-  setZones: Dispatch<SetStateAction<Zone[]>>;
+  editData?: SubscriptionPlan;
+  setPlans: Dispatch<SetStateAction<SubscriptionPlan[]>>;
 }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   return (
@@ -32,13 +32,13 @@ const PlanZoneModal = ({
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalHeader>
-            {editData ? `Editar Zona: ${editData.label}` : "Crear Zona"}
+            {editData ? `Editar Plan: ${editData.title}` : "Crear Plan"}
           </ModalHeader>
           <ModalBody>
-            <PlanZoneForm
+            <PlanForm
               editData={editData}
               onClose={onClose}
-              setZones={setZones}
+              setPlans={setPlans}
             />
           </ModalBody>
         </ModalContent>
@@ -47,4 +47,4 @@ const PlanZoneModal = ({
   );
 };
 
-export default PlanZoneModal;
+export default PlanFormModal;

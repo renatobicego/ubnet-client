@@ -9,6 +9,7 @@ import { MapSetup } from "@/components/maps/ZonesMap";
 import PlanZonesTab from "./PlanZones/PlanZonesTab";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import { signOut } from "next-auth/react";
+import PlansTab from "./Plans/PlansTab";
 
 const TabsForms = () => {
   const [selectedTab, setSelectedTab] = useState("banners");
@@ -92,6 +93,9 @@ const TabsForms = () => {
         </Tab>
         <Tab key="zones" title="Zonas">
           <PlanZonesTab />
+        </Tab>
+        <Tab key="plans" title="Planes">
+          <PlansTab />
         </Tab>
       </Tabs>
     </section>

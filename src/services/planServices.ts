@@ -1,5 +1,10 @@
 import { authOptions } from "@/lib/auth";
-import { PostZone, Zone } from "@/types/subscription-plans";
+import {
+  PostSubscriptionPlan,
+  PostZone,
+  SubscriptionPlan,
+  Zone,
+} from "@/types/subscription-plans";
 import { mockedPlans } from "@/utils/mockdata";
 import { API_URL } from "@/utils/urls";
 import axios from "axios";
@@ -54,5 +59,79 @@ export const createZone = async (zone: PostZone) => {
   } catch (error) {
     console.error("Error creating zone:", error);
     throw new Error("Error al crear la zona");
+  }
+};
+
+export const deleteZone = async (id: string) => {
+  try {
+    await axios.delete(`${API_URL}/zone/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await getServerSession(authOptions).then(
+          (res) => res?.backendToken,
+        )}`,
+      },
+    });
+  } catch (error) {
+    console.error("Error deleting zone:", error);
+    throw new Error("Error al borrar la zona");
+  }
+};
+
+export const createPlan = async (plan: PostSubscriptionPlan) => {
+  try {
+    const { data }: { data: SubscriptionPlan } = await axios.post(
+      `${API_URL}/plan`,
+      plan,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${await getServerSession(authOptions).then(
+            (res) => res?.backendToken,
+          )}`,
+        },
+      },
+    );
+    return data;
+  } catch (error) {
+    console.error("Error creating plan:", error);
+    throw new Error("Error al crear el plan");
+  }
+};
+
+export const updatePlan = async (id: string, plan: PostSubscriptionPlan) => {
+  try {
+    const { data }: { data: SubscriptionPlan } = await axios.put(
+      `${API_URL}/plan/${id}`,
+      plan,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${await getServerSession(authOptions).then(
+            (res) => res?.backendToken,
+          )}`,
+        },
+      },
+    );
+    return data;
+  } catch (error) {
+    console.error("Error updating plan:", error);
+    throw new Error("Error al actualizar el plan");
+  }
+};
+
+export const deletePlan = async (id: string) => {
+  try {
+    await axios.delete(`${API_URL}/plan/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await getServerSession(authOptions).then(
+          (res) => res?.backendToken,
+        )}`,
+      },
+    });
+  } catch (error) {
+    console.error("Error deleting plan:", error);
+    throw new Error("Error al borrar el plan");
   }
 };

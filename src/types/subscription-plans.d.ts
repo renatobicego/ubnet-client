@@ -15,6 +15,21 @@ export interface SubscriptionPlan {
   planType: PlanType;
 }
 
+export interface PostSubscriptionPlan {
+  title: string;
+  detail: string[];
+  isPromotionPlan: boolean;
+  isFeature: boolean;
+  isActive: boolean;
+  uploadDownloadValues: {
+    upload: string;
+    download: string;
+  };
+  sideText?: string;
+  type?: string;
+  planType: PlanType;
+}
+
 export interface Zone {
   _id: string;
   label: string;
