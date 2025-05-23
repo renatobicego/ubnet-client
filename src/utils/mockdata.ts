@@ -9,14 +9,12 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    isPromotionPlan: false,
     isFeature: false,
     isActive: true,
     uploadDownloadValues: {
       upload: "30 Mb",
       download: "50 Mb",
     },
-    type: "light",
     planType: "fiber",
   },
   {
@@ -26,14 +24,12 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    isPromotionPlan: false,
     isFeature: false,
     isActive: true,
     uploadDownloadValues: {
       upload: "30 Mb",
       download: "50 Mb",
     },
-    type: "light",
     planType: "fiber",
   },
   {
@@ -43,14 +39,13 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    isPromotionPlan: false,
     isFeature: false,
+    sideText: "Promoción 10% off",
     isActive: true,
     uploadDownloadValues: {
       upload: "30 Mb",
       download: "50 Mb",
     },
-    type: "light",
     planType: "5g",
   },
   {
@@ -60,14 +55,12 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 2 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    isPromotionPlan: false,
     isFeature: false,
     isActive: true,
     uploadDownloadValues: {
       upload: "30 Mb",
       download: "50 Mb",
     },
-    type: "light",
     planType: "5g",
   },
   {
@@ -77,15 +70,39 @@ export const mockedPlans: SubscriptionPlan[] = [
       "Uso recomendado para 5 personas",
       "Orientado a hogares con uso de redes sociales y música",
     ],
-    isPromotionPlan: false,
     isFeature: true,
+    sideText: "Promoción 10% off",
     isActive: true,
     uploadDownloadValues: {
       upload: "30 Mb",
       download: "50 Mb",
     },
-    type: "max",
     planType: "fiber",
+  },
+  {
+    planType: "security",
+    _id: "6",
+    title: "Plan Light",
+    detail: [
+      "Uso recomendado para 2 personas",
+      "Orientado a hogares con uso de redes sociales y musica",
+    ],
+    isFeature: false,
+    isActive: true,
+    price: 100,
+    sideText: "Promoción 10% off",
+  },
+  {
+    planType: "security",
+    _id: "7",
+    title: "Plan Light",
+    detail: [
+      "Uso recomendado para 2 personas",
+      "Orientado a hogares con uso de redes sociales y musica",
+    ],
+    isFeature: false,
+    isActive: true,
+    price: 200,
   },
 ];
 
