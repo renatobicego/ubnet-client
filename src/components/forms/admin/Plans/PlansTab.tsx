@@ -42,15 +42,15 @@ const PlansTab = () => {
       <div className="flex w-full flex-col gap-4">
         <div
           data-observe={true}
-          className="bg-primary mx-auto mb-8 flex w-fit flex-wrap justify-center gap-2 rounded-2xl px-8 py-4"
+          className="mx-auto mb-8 flex w-fit flex-wrap justify-center gap-2 rounded-2xl px-8 py-4"
         >
           {filters.map((filter) => (
             <PrimaryButton
               key={filter.id}
-              color={filterSelected === filter.id ? "secondary" : "primary"}
+              color={filterSelected === filter.id ? "primary" : "secondary"}
               onPress={() => setFilterSelected(filter.id)}
               variant={filterSelected === filter.id ? "solid" : "bordered"}
-              className={`border-white ${filterSelected === filter.id ? "text-primary" : ""}`}
+              className={`border-primary ${filterSelected === filter.id ? "text-white" : "text-primary"}`}
             >
               {filter.label}
             </PrimaryButton>
@@ -62,11 +62,22 @@ const PlansTab = () => {
           className="light-section w-full flex-col gap-6 max-md:flex md:grid md:grid-cols-2 lg:grid-cols-2"
         >
           {plansFiltered?.map((plan) => (
-            <PlanCard key={plan._id} plan={plan} />
+            <PlanCard
+              key={plan._id}
+              plan={plan}
+              isFormPlan
+              setPlans={setPlans}
+            />
           ))}
 
           {featuredPlans?.map((plan) => (
-            <PlanCard key={plan._id} plan={plan} isMax={true} />
+            <PlanCard
+              key={plan._id}
+              plan={plan}
+              isMax={true}
+              isFormPlan
+              setPlans={setPlans}
+            />
           ))}
         </article>
       </div>

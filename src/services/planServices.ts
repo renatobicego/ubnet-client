@@ -1,5 +1,7 @@
+"use server";
 import { authOptions } from "@/lib/auth";
 import {
+  PostSecurityPlan,
   PostSubscriptionPlan,
   PostZone,
   SubscriptionPlan,
@@ -78,7 +80,9 @@ export const deleteZone = async (id: string) => {
   }
 };
 
-export const createPlan = async (plan: PostSubscriptionPlan) => {
+export const createPlan = async (
+  plan: PostSubscriptionPlan | PostSecurityPlan,
+) => {
   try {
     const { data }: { data: SubscriptionPlan } = await axios.post(
       `${API_URL}/plan`,
@@ -99,7 +103,10 @@ export const createPlan = async (plan: PostSubscriptionPlan) => {
   }
 };
 
-export const updatePlan = async (id: string, plan: PostSubscriptionPlan) => {
+export const updatePlan = async (
+  id: string,
+  plan: PostSubscriptionPlan | PostSecurityPlan,
+) => {
   try {
     const { data }: { data: SubscriptionPlan } = await axios.put(
       `${API_URL}/plan/${id}`,

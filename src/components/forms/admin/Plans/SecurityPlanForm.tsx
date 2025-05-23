@@ -2,25 +2,25 @@ import PrimaryButton from "@/components/buttons/PrimaryButton";
 import PlanCard from "@/components/cards/PlanCard";
 import { createPlan, updatePlan } from "@/services/planServices";
 import {
-  FiberOr5GPlan,
   PlanType,
-  PostSubscriptionPlan,
+  PostSecurityPlan,
+  SecurityPlan,
   SubscriptionPlan,
 } from "@/types/subscription-plans";
 import { addToast, Button, Form, Input, Switch } from "@heroui/react";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 
-const PlanForm = ({
+const SecurityPlanForm = ({
   editData,
   onClose,
   setPlans,
   planTypeSelected,
 }: {
-  editData?: FiberOr5GPlan | PostSubscriptionPlan;
+  editData?: SecurityPlan | PostSecurityPlan;
   onClose: () => void;
   setPlans: Dispatch<SetStateAction<SubscriptionPlan[]>>;
-  planTypeSelected: Extract<PlanType, "fiber" | "5g">;
+  planTypeSelected: Extract<PlanType, "security">;
 }) => {
   const details =
     editData &&
@@ -32,16 +32,13 @@ const PlanForm = ({
           id: crypto.randomUUID(),
         }))
       : (editData?.detail as { text: string; id: string }[]);
-  const [values, setValues] = useState<PostSubscriptionPlan>({
+  const [values, setValues] = useState<PostSecurityPlan>({
     detail: details || [],
     isActive: editData ? editData.isActive : true,
     isFeature: editData ? editData.isFeature : false,
     planType: editData ? editData.planType : planTypeSelected,
     title: editData ? editData.title : "",
-    uploadDownloadValues: {
-      download: editData ? editData.uploadDownloadValues.download : "",
-      upload: editData ? editData.uploadDownloadValues.upload : "",
-    },
+    price: editData ? editData.price : 0,
     sideText: editData ? editData.sideText : undefined,
   });
 
@@ -51,7 +48,7 @@ const PlanForm = ({
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setIsSubmitting(true);
     e.preventDefault();
-    const { detail, title, planType, uploadDownloadValues } = values;
+    const { detail, title, planType } = values;
     if (detail.length === 0) {
       addToast({
         title: "Error",
@@ -74,18 +71,6 @@ const PlanForm = ({
       addToast({
         title: "Error",
         description: "Debe seleccionar un tipo de plan",
-        color: "danger",
-      });
-      setIsSubmitting(false);
-      return;
-    }
-    if (
-      uploadDownloadValues.download.trim().length === 0 ||
-      uploadDownloadValues.upload.trim().length === 0
-    ) {
-      addToast({
-        title: "Error",
-        description: "Los valores de descarga y subida no pueden estar vacíos",
         color: "danger",
       });
       setIsSubmitting(false);
@@ -180,67 +165,34 @@ const PlanForm = ({
             }
             description="Toque '+ Agregar' para agregar el detalle"
           />
-          <div className="flex items-center gap-2">
-            <Switch
-              isSelected={values.isActive}
-              classNames={{
-                label: "text-small",
-              }}
-              onChange={(e) =>
-                setValues({ ...values, isActive: e.target.checked })
-              }
-            >
-              Plan Activo
-            </Switch>
-            <Switch
-              classNames={{
-                label: "text-small",
-              }}
-              isSelected={values.isFeature}
-              onChange={(e) =>
-                setValues({ ...values, isFeature: e.target.checked })
-              }
-            >
-              Plan Destacado
-            </Switch>
-          </div>
+          <Switch
+            isSelected={values.isActive}
+            classNames={{
+              label: "text-small",
+            }}
+            onChange={(e) =>
+              setValues({ ...values, isActive: e.target.checked })
+            }
+          >
+            Plan Activo
+          </Switch>
+
           <Input
             isRequired
             type="number"
             errorMessage="Este campo es requerido"
-            label="Mbps de Subida"
+            label="Precio"
             labelPlacement="outside"
             name="label"
             onValueChange={(value) =>
-              setValues((prev) => ({
+              setValues({
                 ...values,
-                uploadDownloadValues: {
-                  ...prev.uploadDownloadValues,
-                  upload: value,
-                },
-              }))
+                price: Number(value),
+              })
             }
-            value={values.uploadDownloadValues.upload}
-            placeholder="Ingrese el valor de subida"
-          />
-          <Input
-            isRequired
-            type="number"
-            errorMessage="Este campo es requerido"
-            label="Mbps de Bajada"
-            labelPlacement="outside"
-            name="label"
-            onValueChange={(value) =>
-              setValues((prev) => ({
-                ...values,
-                uploadDownloadValues: {
-                  ...prev.uploadDownloadValues,
-                  download: value,
-                },
-              }))
-            }
-            value={values.uploadDownloadValues.download}
-            placeholder="Ingrese el valor de bajada"
+            pattern="^[0-9.,]*$"
+            value={values.price.toString()}
+            placeholder="Ingrese el precio"
           />
           <Input
             label="Mensaje de Promoción/Destacado"
@@ -276,4 +228,4 @@ const PlanForm = ({
   );
 };
 
-export default PlanForm;
+export default SecurityPlanForm;

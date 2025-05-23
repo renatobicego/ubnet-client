@@ -1,15 +1,18 @@
 "use client";
 
-import { Tabs, Tab } from "@heroui/react";
-import { useState, useCallback, useEffect } from "react";
+import { Tabs, Tab, Spinner } from "@heroui/react";
+import { useState, useCallback, useEffect, Suspense } from "react";
 import BannerTab from "./Banner/BannerTab";
 import { BannerProvider } from "@/context/BannerContext";
-import ZoneMapForm from "./ZoneMap/ZoneMapForm";
-import { MapSetup } from "@/components/maps/ZonesMap";
-import PlanZonesTab from "./PlanZones/PlanZonesTab";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import { signOut } from "next-auth/react";
-import PlansTab from "./Plans/PlansTab";
+import dynamic from "next/dynamic";
+const PlansTab = dynamic(() => import("./Plans/PlansTab"));
+const PlanZonesTab = dynamic(() => import("./PlanZones/PlanZonesTab"));
+const MapSetup = dynamic(() =>
+  import("@/components/maps/ZonesMap").then((mod) => mod.MapSetup),
+);
+const ZoneMapForm = dynamic(() => import("./ZoneMap/ZoneMapForm"));
 
 const TabsForms = () => {
   const [selectedTab, setSelectedTab] = useState("banners");
@@ -87,15 +90,21 @@ const TabsForms = () => {
           </BannerProvider>
         </Tab>
         <Tab key="cobertura" title="Cobertura">
-          <MapSetup>
-            <ZoneMapForm onEditingChange={updateEditingState} />
-          </MapSetup>
+          <Suspense fallback={<Spinner color="primary" size="lg" />}>
+            <MapSetup>
+              <ZoneMapForm onEditingChange={updateEditingState} />
+            </MapSetup>
+          </Suspense>
         </Tab>
         <Tab key="zones" title="Zonas">
-          <PlanZonesTab />
+          <Suspense fallback={<Spinner color="primary" size="lg" />}>
+            <PlanZonesTab />
+          </Suspense>
         </Tab>
         <Tab key="plans" title="Planes">
-          <PlansTab />
+          <Suspense fallback={<Spinner color="primary" size="lg" />}>
+            <PlansTab />
+          </Suspense>
         </Tab>
       </Tabs>
     </section>
