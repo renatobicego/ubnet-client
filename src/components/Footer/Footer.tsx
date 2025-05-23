@@ -2,7 +2,7 @@
 import Image from "next/image";
 import PrimaryButton from "../buttons/PrimaryButton";
 import { Link } from "@heroui/react";
-import { FaPhone } from "react-icons/fa6";
+import { FaPhone, FaWhatsapp } from "react-icons/fa6";
 import ProtectPersonalData from "../modals/legals/ProtectPersonalData";
 import TermsConditions from "../modals/legals/TermsConditions";
 import LawConsumer from "../modals/legals/LawConsumer";
@@ -24,11 +24,23 @@ const Footer = () => {
           <h6 className="font-medium">Nuestro contacto</h6>
           <PrimaryButton
             color="secondary"
-            startContent={<FaPhone />}
             as={Link}
-            href="tel:2974262219"
+            target="_blank"
+            startContent={<FaPhone />}
+            className="pl-6"
+            href="tel:08103421001"
           >
-            2974262219
+            0810 342 1001
+          </PrimaryButton>
+          <PrimaryButton
+            color="secondary"
+            startContent={<FaWhatsapp className="size-5" />}
+            target="_blank"
+            className="pl-6"
+            as={Link}
+            href="https://wa.me/+542974262219"
+          >
+            297 426 2219
           </PrimaryButton>
           <p className="text-xs md:text-sm xl:text-base">
             Lunes a viernes de 9hs a 18hs

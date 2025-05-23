@@ -2,7 +2,7 @@
 import { Form, Image, Input, Link, Textarea } from "@heroui/react";
 import React from "react";
 import PrimaryButton from "../buttons/PrimaryButton";
-import { FaPhone } from "react-icons/fa6";
+import { FaPhone, FaWhatsapp } from "react-icons/fa6";
 
 const ContactForm = () => {
   return (
@@ -107,16 +107,30 @@ const ContactForm = () => {
                 Enviar
               </PrimaryButton>
               <address className="flex flex-col items-start gap-2.5 text-white not-italic md:items-end">
-                <PrimaryButton
-                  color="secondary"
-                  className="text-white"
-                  variant="bordered"
-                  startContent={<FaPhone />}
-                  as={Link}
-                  href="tel:2974262219"
-                >
-                  2974262219
-                </PrimaryButton>
+                <div className="flex items-end gap-2 max-md:flex-col md:items-center">
+                  <PrimaryButton
+                    color="secondary"
+                    className="pl-6 text-white"
+                    variant="bordered"
+                    as={Link}
+                    target="_blank"
+                    startContent={<FaPhone />}
+                    href="tel:08103421001"
+                  >
+                    0810 342 1001
+                  </PrimaryButton>
+                  <PrimaryButton
+                    color="secondary"
+                    className="pl-6 text-white"
+                    variant="bordered"
+                    startContent={<FaWhatsapp className="size-5" />}
+                    target="_blank"
+                    as={Link}
+                    href="https://wa.me/+542974262219"
+                  >
+                    297 426 2219
+                  </PrimaryButton>
+                </div>
                 <p className="text-xs md:text-sm xl:text-base">
                   Lunes a viernes de 9hs a 18hs
                 </p>
