@@ -76,10 +76,33 @@ const SecurityPlanForm = ({
       setIsSubmitting(false);
       return;
     }
+    if (values.price === 0) {
+      addToast({
+        title: "Error",
+        description: "El precio es requerido",
+        color: "danger",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
+    if (currentDetail.length > 0) {
+      addToast({
+        title: "Detalle no guardado",
+        description: 'Debe tocar el botón "+ Agregar" para guardar el detalle',
+        color: "warning",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    const parsedValues = {
+      ...values,
+      detail: detail.map((detail) => detail.text),
+    };
     try {
       if (editData && "_id" in editData) {
-        const updatedPlan = await updatePlan(editData._id, values);
+        const updatedPlan = await updatePlan(editData._id, parsedValues);
         setPlans((prevPlans) =>
           prevPlans.map((p) => (p._id === updatedPlan._id ? updatedPlan : p)),
         );
@@ -90,7 +113,7 @@ const SecurityPlanForm = ({
         });
         onClose();
       } else {
-        const newPlan = await createPlan(values);
+        const newPlan = await createPlan(parsedValues);
         setPlans((prevPlans) => [...prevPlans, newPlan]);
         addToast({
           title: "Plan creado",
@@ -131,7 +154,11 @@ const SecurityPlanForm = ({
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex w-full items-start gap-6">
-        <Form className="flex flex-1 flex-col gap-2" onSubmit={onSubmit}>
+        <Form
+          id="securityPlanForm"
+          className="flex flex-1 flex-col gap-2"
+          onSubmit={onSubmit}
+        >
           <Input
             isRequired
             errorMessage="Este campo es requerido"
@@ -220,6 +247,7 @@ const SecurityPlanForm = ({
           isLoading={isSubmitting}
           isDisabled={isSubmitting}
           type="submit"
+          form="securityPlanForm"
         >
           Guardar
         </PrimaryButton>

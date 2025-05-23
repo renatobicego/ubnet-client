@@ -81,7 +81,9 @@ export const deleteZone = async (id: string) => {
 };
 
 export const createPlan = async (
-  plan: PostSubscriptionPlan | PostSecurityPlan,
+  plan: Omit<PostSubscriptionPlan | PostSecurityPlan, "detail"> & {
+    detail: string[];
+  },
 ) => {
   try {
     const { data }: { data: SubscriptionPlan } = await axios.post(
@@ -105,7 +107,9 @@ export const createPlan = async (
 
 export const updatePlan = async (
   id: string,
-  plan: PostSubscriptionPlan | PostSecurityPlan,
+  plan: Omit<PostSubscriptionPlan | PostSecurityPlan, "detail"> & {
+    detail: string[];
+  },
 ) => {
   try {
     const { data }: { data: SubscriptionPlan } = await axios.put(

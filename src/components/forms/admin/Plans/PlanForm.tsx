@@ -51,6 +51,7 @@ const PlanForm = ({
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setIsSubmitting(true);
     e.preventDefault();
+
     const { detail, title, planType, uploadDownloadValues } = values;
     if (detail.length === 0) {
       addToast({
@@ -92,9 +93,24 @@ const PlanForm = ({
       return;
     }
 
+    if (currentDetail.length > 0) {
+      addToast({
+        title: "Detalle no guardado",
+        description: 'Debe tocar el botón "+ Agregar" para guardar el detalle',
+        color: "warning",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    const parsedValues = {
+      ...values,
+      detail: detail.map((detail) => detail.text),
+    };
+
     try {
       if (editData && "_id" in editData) {
-        const updatedPlan = await updatePlan(editData._id, values);
+        const updatedPlan = await updatePlan(editData._id, parsedValues);
         setPlans((prevPlans) =>
           prevPlans.map((p) => (p._id === updatedPlan._id ? updatedPlan : p)),
         );
@@ -105,7 +121,7 @@ const PlanForm = ({
         });
         onClose();
       } else {
-        const newPlan = await createPlan(values);
+        const newPlan = await createPlan(parsedValues);
         setPlans((prevPlans) => [...prevPlans, newPlan]);
         addToast({
           title: "Plan creado",
@@ -146,7 +162,11 @@ const PlanForm = ({
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex w-full items-start gap-6">
-        <Form className="flex flex-1 flex-col gap-2" onSubmit={onSubmit}>
+        <Form
+          id="plan-form"
+          className="flex flex-1 flex-col gap-2"
+          onSubmit={onSubmit}
+        >
           <Input
             isRequired
             errorMessage="Este campo es requerido"
@@ -268,6 +288,7 @@ const PlanForm = ({
           isLoading={isSubmitting}
           isDisabled={isSubmitting}
           type="submit"
+          form="plan-form"
         >
           Guardar
         </PrimaryButton>
