@@ -61,7 +61,7 @@ const SecurityPlanForm = ({
     if (title.trim().length === 0) {
       addToast({
         title: "Error",
-        description: "El nombre de la zona/localidad no puede estar vacío",
+        description: "El nombre del plan no puede estar vacío",
         color: "danger",
       });
       setIsSubmitting(false);

@@ -81,7 +81,7 @@ const PlanFormModal = ({
           </Button>
         </menu>
       ) : (
-        <PrimaryButton onPress={onOpen}>Crear Zona</PrimaryButton>
+        <PrimaryButton onPress={onOpen}>Crear Plan</PrimaryButton>
       )}
       <Modal
         isOpen={isOpen}
