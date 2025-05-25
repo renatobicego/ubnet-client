@@ -1,4 +1,5 @@
 import { ImageBanner } from "@/components/carousel/ImageCarousel";
+import { useBannerContext } from "@/context/BannerContext";
 import { deleteFilesService } from "@/services/uploadthingServices";
 import { UploadDropzone } from "@/utils/uploadthing";
 import { UT_URL } from "@/utils/urls";
@@ -34,6 +35,8 @@ const EditBannerForm = ({
     imageMobile: banner.mobileImageUrl || "",
   });
 
+  const { setBannersImagesToDelete } = useBannerContext();
+
   return (
     <Form
       id="edit-banner"
@@ -47,7 +50,7 @@ const EditBannerForm = ({
         <UploadDropzone
           endpoint="imageUploader"
           content={{
-            allowedContent: "Imagen 8Mb",
+            allowedContent: "Imagen Máx. 8Mb",
             label:
               "Selecciona una imagen o arrastra una aca. Aspecto 3/1 para computadoras",
             button: "Subir imagen",
@@ -65,6 +68,7 @@ const EditBannerForm = ({
               ...prev,
               image: res[0].key,
             }));
+            setBannersImagesToDelete((prev) => [...prev, banner.imageUrl]);
             setValues((prevValues) => ({
               ...prevValues,
               image: res[0].key,
@@ -75,27 +79,32 @@ const EditBannerForm = ({
             addToast({
               title: "Error al subir la imagen",
               color: "danger",
-              description: error.message,
+              description:
+                error.message === `Invalid config: FileSizeMismatch`
+                  ? "El archivo es demasiado grande"
+                  : error.message,
             });
           }}
           onUploadBegin={() => addToast({ title: "Subiendo imagen..." })}
         />
         {isNewImageUploaded.image && (
-          <Image
-            src={`${UT_URL}/${isNewImageUploaded.image}`}
-            alt="Imagen subida"
-            removeWrapper
-            className="aspect-[3/1]"
-            width={300}
-            height={100}
-          />
+          <div className="flex-1">
+            <Image
+              src={`${UT_URL}/${isNewImageUploaded.image}`}
+              alt="Imagen subida"
+              classNames={{
+                wrapper: "h-full w-full !max-w-full",
+                img: "aspect-[3/1] w-full h-auto object-cover",
+              }}
+            />
+          </div>
         )}
       </div>
       <div className="flex gap-4">
         <UploadDropzone
           endpoint="imageUploader"
           content={{
-            allowedContent: "Imagen 8Mb",
+            allowedContent: "Imagen Máx. 8Mb",
             label:
               "Selecciona una imagen o arrastra una aca. Aspecto 16/9 para teléfonos",
             button: "Subir imagen",
@@ -109,6 +118,10 @@ const EditBannerForm = ({
                 console.error("Error deleting file:", error);
               }
             }
+            setBannersImagesToDelete((prev) => [
+              ...prev,
+              banner.mobileImageUrl || "",
+            ]);
             setIsNewImageUploaded((prev) => ({
               ...prev,
               imageMobile: res[0].key,
@@ -122,19 +135,24 @@ const EditBannerForm = ({
             addToast({
               title: "Error al subir la imagen",
               color: "danger",
-              description: error.message,
+              description:
+                error.message === `Invalid config: FileSizeMismatch`
+                  ? "El archivo es demasiado grande"
+                  : error.message,
             });
           }}
         />
         {isNewImageUploaded.imageMobile && (
-          <Image
-            src={`${UT_URL}/${isNewImageUploaded.imageMobile}`}
-            alt="Imagen subida"
-            className="aspect-video"
-            removeWrapper
-            width={300}
-            height={169}
-          />
+          <div className="flex-1">
+            <Image
+              src={`${UT_URL}/${isNewImageUploaded.imageMobile}`}
+              alt="Imagen subida"
+              classNames={{
+                wrapper: "h-full w-full !max-w-full",
+                img: "aspect-video w-full h-auto object-cover",
+              }}
+            />
+          </div>
         )}
       </div>
       <Input

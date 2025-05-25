@@ -67,7 +67,7 @@ const CreateBanner = () => {
         color: "danger",
       });
       setIsLoading(false);
-      return;
+      return false;
     }
     if (isNewImageUploaded.image) {
       data.image = isNewImageUploaded.image;
@@ -79,7 +79,7 @@ const CreateBanner = () => {
         color: "danger",
       });
       setIsLoading(false);
-      return;
+      return false;
     }
     try {
       const resData = await createBanner({
@@ -93,14 +93,23 @@ const CreateBanner = () => {
         title: "Banner creado",
         color: "success",
       });
+      setIsEditing((prev) => ({
+        ...prev,
+        editingBannerModalOpen: false,
+      }));
+      setIsNewImageUploaded({
+        image: "",
+        imageMobile: "",
+      });
       onClose();
+      return true;
     } catch {
       addToast({
         title: "Error al crear el banner",
         description: "No se pudo crear el banner.",
         color: "danger",
       });
-      return;
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +124,7 @@ const CreateBanner = () => {
           wrapper: "z-[1000]",
         }}
         isOpen={isOpen}
-        size="3xl"
+        size="5xl"
         onOpenChange={onOpenChange}
       >
         <ModalContent>

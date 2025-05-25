@@ -116,6 +116,9 @@ export default function ImageCarousel({
 
   if (!images.length) return null;
 
+  const keyUrlToShow = isMobile
+    ? images[currentIndex].mobileImageUrl
+    : images[currentIndex].imageUrl;
   return (
     <section
       id="avisos"
@@ -135,13 +138,7 @@ export default function ImageCarousel({
             className="absolute h-full w-full"
           >
             <Image
-              src={`${UT_URL}
-                ${
-                  isMobile && images[currentIndex].mobileImageUrl
-                    ? images[currentIndex].mobileImageUrl
-                    : images[currentIndex].imageUrl
-                }
-                `}
+              src={`${UT_URL}/${keyUrlToShow}`}
               alt={`Imagen ${currentIndex}: ${images[currentIndex].description}`}
               className="h-full w-full object-cover"
               removeWrapper

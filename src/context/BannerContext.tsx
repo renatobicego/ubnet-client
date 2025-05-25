@@ -21,12 +21,17 @@ interface BannerContextType {
     }>
   >;
   fetchBanners: () => Promise<void>;
+  setBannersImagesToDelete: React.Dispatch<React.SetStateAction<string[]>>;
+  bannersImagesToDelete: string[];
 }
 
 const BannerContext = createContext<BannerContextType | undefined>(undefined);
 
 export const BannerProvider = ({ children }: { children: ReactNode }) => {
   const [banners, setBanners] = useState<ImageBanner[]>([]);
+  const [bannersImagesToDelete, setBannersImagesToDelete] = useState<string[]>(
+    [],
+  );
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState({
     editingOrder: false,
@@ -37,7 +42,7 @@ export const BannerProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       const bannersData = await getAllBanners();
-      setBanners(bannersData);
+      setBanners(bannersData.sort((a, b) => a.order - b.order));
     } catch {
       addToast({
         title: "Error al cargar los banners",
@@ -56,6 +61,8 @@ export const BannerProvider = ({ children }: { children: ReactNode }) => {
     setBanners,
     setIsEditing,
     fetchBanners,
+    setBannersImagesToDelete,
+    bannersImagesToDelete,
   };
 
   return (

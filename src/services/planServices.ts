@@ -7,7 +7,6 @@ import {
   SubscriptionPlan,
   Zone,
 } from "@/types/subscription-plans";
-import { mockedPlans } from "@/utils/mockdata";
 import { API_URL } from "@/utils/urls";
 import axios from "axios";
 import { getServerSession } from "next-auth";
@@ -23,7 +22,15 @@ export const getZonesAndPlans = async () => {
 };
 
 export const getPlans = async () => {
-  return mockedPlans;
+  try {
+    const { data }: { data: SubscriptionPlan[] } = await axios.get(
+      `${API_URL}/plan`,
+    );
+    return data;
+  } catch (error) {
+    console.error("Error fetching zones and plans:", error);
+    throw new Error("Error al traer las zonas y planes");
+  }
 };
 
 export const updateZone = async (id: string, zone: PostZone) => {
@@ -86,6 +93,7 @@ export const createPlan = async (
   },
 ) => {
   try {
+    console.log(plan);
     const { data }: { data: SubscriptionPlan } = await axios.post(
       `${API_URL}/plan`,
       plan,

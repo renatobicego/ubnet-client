@@ -178,7 +178,6 @@ const PlanForm = ({
             placeholder="Ingrese el plan"
           />
           <Input
-            isRequired
             errorMessage="Este campo es requerido"
             label="Detalles"
             labelPlacement="outside"

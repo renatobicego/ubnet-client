@@ -10,6 +10,7 @@ export const ourFileRouter = {
     image: {
       maxFileSize: "8MB",
       maxFileCount: 1,
+      minFileCount: 1,
     },
   })
     // Set permissions and file types for this FileRoute

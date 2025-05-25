@@ -92,6 +92,11 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
       editingOrder: true,
       editingBannerModalOpen: false,
     });
+    setIsNewImageUploaded({
+      image: "",
+      imageMobile: "",
+    });
+
     onClose();
   };
   return (
@@ -109,7 +114,7 @@ const EditBanner = ({ banner }: { banner: ImageBanner }) => {
         classNames={{
           wrapper: "z-[1000]",
         }}
-        size="2xl"
+        size="5xl"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >

@@ -89,7 +89,7 @@ const SortableBannerItem = ({ banner }: { banner: ImageBanner }) => {
       style={style}
       {...(isEditing.editingBannerModalOpen ? {} : attributes)}
       {...(isEditing.editingBannerModalOpen ? {} : listeners)}
-      className={`min-w-[60%] ${
+      className={`w-[60%] min-w-[60%] ${
         isEditing.editingBannerModalOpen
           ? "cursor-default"
           : "cursor-grab active:cursor-grabbing"
@@ -155,6 +155,8 @@ const BannerVisualizer = () => {
     setBanners: onReorder,
     banners,
     loading,
+    bannersImagesToDelete,
+    setBannersImagesToDelete,
   } = useBannerContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Set up sensors for drag detection
@@ -202,6 +204,12 @@ const BannerVisualizer = () => {
         ...prev,
         editingOrder: false,
       }));
+      addToast({
+        title: "Banners editados",
+        color: "success",
+      });
+      await deleteFilesService(bannersImagesToDelete);
+      setBannersImagesToDelete([]);
     } catch {
       addToast({
         title: "Error al guardar los banners",
@@ -239,11 +247,13 @@ const BannerVisualizer = () => {
         {isEditing.editingOrder && (
           <menu className="flex items-center gap-2">
             <PrimaryButton
-              onPress={() => {
+              onPress={async () => {
                 setIsEditing((prev) => ({
                   ...prev,
                   editingOrder: false,
                 }));
+                await deleteFilesService(bannersImagesToDelete);
+                setBannersImagesToDelete([]);
                 onRefresh();
               }}
               color="secondary"

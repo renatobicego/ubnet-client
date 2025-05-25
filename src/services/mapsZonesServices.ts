@@ -15,6 +15,7 @@ export const getShapes = async () => {
         },
       },
     );
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching data shape:", error);
@@ -24,7 +25,8 @@ export const getShapes = async () => {
 
 export const updateShapes = async (shapes: ShapeData[]) => {
   try {
-    await axios.put(`${API_URL}/shapeData`, shapes, {
+    console.log(shapes.map((shape) => shape));
+    await axios.post(`${API_URL}/shapeData`, shapes, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${await getServerSession(authOptions).then(
@@ -32,7 +34,8 @@ export const updateShapes = async (shapes: ShapeData[]) => {
         )}`,
       },
     });
-  } catch {
+  } catch (error) {
+    console.error("Error updating shapes:", error);
     throw new Error("Error al actualizar la cobertura");
   }
 };

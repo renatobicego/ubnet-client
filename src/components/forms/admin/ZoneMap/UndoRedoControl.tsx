@@ -94,6 +94,8 @@ export function UndoRedoControl({
     }
   };
 
+  console.log(state.past, state.now);
+
   return (
     <div className="rounded bg-white p-2 shadow-md">
       <div className="mb-2 flex gap-2">
@@ -113,7 +115,7 @@ export function UndoRedoControl({
             <PrimaryButton
               size="sm"
               onPress={handleSubmit}
-              isDisabled={state.past.length === state.now.length || isLoading}
+              isDisabled={isLoading}
               title="save changes"
               isLoading={isLoading}
             >

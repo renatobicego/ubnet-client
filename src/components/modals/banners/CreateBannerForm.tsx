@@ -16,7 +16,7 @@ const CreateBannerForm = ({
     }>
   >;
   isNewImageUploaded: { image: string; imageMobile: string };
-  onSubmit: (data: { description: string; image: string }) => Promise<void>;
+  onSubmit: (data: { description: string; image: string }) => Promise<boolean>;
 }) => {
   const [values, setValues] = useState({
     description: "",
@@ -27,13 +27,14 @@ const CreateBannerForm = ({
   return (
     <Form
       id="create-banner"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        onSubmit(values);
+        const success = await onSubmit(values);
+        if (success) setValues({ description: "", image: "", imageMobile: "" });
       }}
       className="flex flex-col gap-4"
     >
-      <div className="flex gap-4">
+      <div className="flex w-full gap-4">
         <UploadDropzone
           endpoint="imageUploader"
           content={{
@@ -65,23 +66,28 @@ const CreateBannerForm = ({
             addToast({
               title: "Error al subir la imagen",
               color: "danger",
-              description: error.message,
+              description:
+                error.message === `Invalid config: FileSizeMismatch`
+                  ? "El archivo es demasiado grande"
+                  : error.message,
             });
           }}
           onUploadBegin={() => addToast({ title: "Subiendo imagen..." })}
         />
         {isNewImageUploaded.image && (
-          <Image
-            src={`${UT_URL}/${isNewImageUploaded.image}`}
-            alt="Imagen subida"
-            className="aspect-[3/1]"
-            removeWrapper
-            width={300}
-            height={100}
-          />
+          <div className="flex-1">
+            <Image
+              src={`${UT_URL}/${isNewImageUploaded.image}`}
+              alt="Imagen subida"
+              classNames={{
+                wrapper: "h-full w-full !max-w-full",
+                img: "aspect-[3/1] w-full h-auto object-cover",
+              }}
+            />
+          </div>
         )}
       </div>
-      <div className="flex gap-4">
+      <div className="flex w-full gap-4">
         <UploadDropzone
           endpoint="imageUploader"
           content={{
@@ -112,19 +118,24 @@ const CreateBannerForm = ({
             addToast({
               title: "Error al subir la imagen",
               color: "danger",
-              description: error.message,
+              description:
+                error.message === `Invalid config: FileSizeMismatch`
+                  ? "El archivo es demasiado grande"
+                  : error.message,
             });
           }}
         />
         {isNewImageUploaded.imageMobile && (
-          <Image
-            src={`${UT_URL}/${isNewImageUploaded.imageMobile}`}
-            alt="Imagen subida"
-            className="aspect-video"
-            removeWrapper
-            width={300}
-            height={169}
-          />
+          <div className="flex-1">
+            <Image
+              src={`${UT_URL}/${isNewImageUploaded.imageMobile}`}
+              alt="Imagen subida"
+              classNames={{
+                wrapper: "h-full w-full !max-w-full",
+                img: "aspect-video w-full h-auto object-cover",
+              }}
+            />
+          </div>
         )}
       </div>
       <Input
