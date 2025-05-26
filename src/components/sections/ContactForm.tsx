@@ -1,10 +1,35 @@
 "use client";
-import { Form, Image, Input, Link, Textarea } from "@heroui/react";
+import { addToast, Form, Image, Input, Link, Textarea } from "@heroui/react";
 import React from "react";
 import PrimaryButton from "../buttons/PrimaryButton";
 import { FaPhone, FaWhatsapp } from "react-icons/fa6";
-
+import useWeb3Forms from "@web3forms/react";
+import { useForm } from "react-hook-form";
 const ContactForm = () => {
+  const { handleSubmit, register } = useForm();
+  const { submit: onSubmit } = useWeb3Forms({
+    access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "",
+    settings: {
+      from_name: "Ubnet Web",
+      subject: "Nuevo mensaje de contacto",
+    },
+    onSuccess: () => {
+      addToast({
+        title: "Mensaje enviado",
+        description:
+          "Gracias por contactarnos, nos pondremos en contacto pronto.",
+        color: "success",
+      });
+    },
+    onError: () => {
+      addToast({
+        title: "Error al enviar el mensaje",
+        description: "Por favor, intente nuevamente más tarde.",
+        color: "danger",
+      });
+    },
+  });
+
   return (
     <>
       <Image
@@ -40,11 +65,7 @@ const ContactForm = () => {
           </header>
           <Form
             className="flex w-full flex-col gap-4 lg:w-3/4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const data = Object.fromEntries(new FormData(e.currentTarget));
-              console.log(data);
-            }}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex w-full items-center gap-4 max-md:flex-col">
               <Input
@@ -52,9 +73,9 @@ const ContactForm = () => {
                 radius="lg"
                 errorMessage="Por favor, ingrese su nombre completo"
                 label="Nombre Completo"
-                name="name"
                 placeholder="Ingrese su nombre completo"
                 type="text"
+                {...register("nombre", { required: true })}
               />
 
               <Input
@@ -62,7 +83,7 @@ const ContactForm = () => {
                 radius="lg"
                 errorMessage="Por favor, ingrese un correo electrónico válido"
                 label="Correo Electrónico"
-                name="email"
+                {...register("email", { required: true })}
                 placeholder="Ingrese su correo electrónico"
                 type="email"
               />
@@ -73,7 +94,7 @@ const ContactForm = () => {
                 radius="lg"
                 errorMessage="Por favor, ingrese un teléfono válido"
                 label="Número de Teléfono"
-                name="phone"
+                {...register("telefono", { required: true })}
                 placeholder="Ingrese su número de teléfono"
                 type="tel"
               />
@@ -83,7 +104,7 @@ const ContactForm = () => {
                 radius="lg"
                 errorMessage="Por favor, ingrese su localidad"
                 label="Localidad"
-                name="location"
+                {...register("localidad", { required: true })}
                 placeholder="Ingrese su localidad"
                 type="text"
               />
@@ -93,7 +114,7 @@ const ContactForm = () => {
               radius="lg"
               errorMessage="Por favor, ingrese su consulta"
               label="Consulta"
-              name="message"
+              {...register("mensaje", { required: true })}
               placeholder="Ingrese su consulta"
               type="text"
               className="w-full"
