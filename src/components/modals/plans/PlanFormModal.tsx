@@ -21,6 +21,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import PlanForm from "@/components/forms/admin/Plans/PlanForm";
 import { planTypesOptions } from "@/utils/itemsData";
 import SecurityPlanForm from "@/components/forms/admin/Plans/SecurityPlanForm";
+import { deletePlan } from "@/services/planServices";
 
 const PlanFormModal = ({
   editData,
@@ -38,14 +39,15 @@ const PlanFormModal = ({
   >(editData?.planType || undefined);
   const handleDelete = async () => {
     const isConfirmed = confirm("¿Estás seguro de eliminar este plan?");
-    if (isConfirmed) {
+    if (isConfirmed && typeof editData === "object" && "_id" in editData) {
       setIsDeleting(true);
       try {
-        // await deleteZone(zone._id);
+        await deletePlan(editData?._id || "");
         addToast({
           color: "success",
           title: "Plan eliminado",
         });
+        setPlans((prev) => prev.filter((plan) => plan._id !== editData?._id));
       } catch {
         addToast({
           color: "danger",

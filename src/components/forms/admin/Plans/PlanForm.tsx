@@ -25,7 +25,7 @@ const PlanForm = ({
   const details =
     editData &&
     editData.detail &&
-    editData.detail.length === 0 &&
+    editData.detail.length !== 0 &&
     typeof editData.detail[0] === "string"
       ? editData.detail.map((detail) => ({
           text: detail as string,
