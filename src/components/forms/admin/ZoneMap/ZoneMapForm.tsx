@@ -29,6 +29,7 @@ const ZoneMapForm = ({
     now: [],
     past: [],
     future: [],
+    shapesToDelete: [],
   });
 
   const toggleDeleteMode = () => {

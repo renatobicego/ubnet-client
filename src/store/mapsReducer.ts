@@ -60,6 +60,7 @@ export default function reducer(state: State, action: Action) {
         past: [...state.past, state.now],
         now: [...overlays],
         future: [], // Clear future when a new action is performed
+        shapesToDelete: state.shapesToDelete,
       };
     }
 
@@ -112,6 +113,7 @@ export default function reducer(state: State, action: Action) {
         past: [...state.past, state.now],
         now: [...state.now, newOverlay],
         future: [], // Clear future when a new action is performed
+        shapesToDelete: state.shapesToDelete,
       };
     }
 
@@ -131,6 +133,9 @@ export default function reducer(state: State, action: Action) {
         past: [...state.past, state.now],
         now: state.now.filter((overlay) => overlay.id !== id),
         future: [], // Clear future when a new action is performed
+        shapesToDelete: overlayToDelete.dbId
+          ? [...state.shapesToDelete, overlayToDelete.dbId]
+          : state.shapesToDelete, // Add the ID to the shapes to delete
       };
     }
 
@@ -140,6 +145,7 @@ export default function reducer(state: State, action: Action) {
         past: [], // Reset past when loading new shapes
         now: [...(action.payload.shapes || [])],
         future: [], // Reset future when loading new shapes
+        shapesToDelete: state.shapesToDelete,
       };
     }
 
@@ -166,6 +172,7 @@ export default function reducer(state: State, action: Action) {
         past: newPast,
         now: previous,
         future: [state.now, ...state.future],
+        shapesToDelete: state.shapesToDelete,
       };
     }
 
@@ -192,6 +199,7 @@ export default function reducer(state: State, action: Action) {
         past: [...state.past, state.now],
         now: next,
         future: newFuture,
+        shapesToDelete: state.shapesToDelete,
       };
     }
 

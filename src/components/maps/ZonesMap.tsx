@@ -34,6 +34,7 @@ const DrawingMap = ({
     now: [],
     past: [],
     future: [],
+    shapesToDelete: [],
   });
 
   // Set up event listeners and load shapes

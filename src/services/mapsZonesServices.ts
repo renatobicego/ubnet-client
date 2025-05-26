@@ -39,3 +39,20 @@ export const updateShapes = async (shapes: ShapeData[]) => {
     throw new Error("Error al actualizar la cobertura");
   }
 };
+
+export const deleteShapes = async (ids: string[]) => {
+  try {
+    await axios.delete(`${API_URL}/shapeData`, {
+      data: ids,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await getServerSession(authOptions).then(
+          (res) => res?.backendToken,
+        )}`,
+      },
+    });
+  } catch (error) {
+    console.error("Error deleting shape:", error);
+    throw new Error("Error al eliminar la zona de cobertura");
+  }
+};

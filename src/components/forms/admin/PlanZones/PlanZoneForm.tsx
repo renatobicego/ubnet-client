@@ -70,7 +70,10 @@ const PlanZoneForm = ({
 
     try {
       if (editData) {
-        const updatedZone = await updateZone(editData._id, values);
+        const updatedZone = await updateZone(editData._id, {
+          ...values,
+          plans: plansUpdated,
+        });
         setZones((prevZones) =>
           prevZones.map((zone) =>
             zone._id === updatedZone._id ? updatedZone : zone,
@@ -83,7 +86,10 @@ const PlanZoneForm = ({
         });
         onClose();
       } else {
-        const newZone = await createZone(values);
+        const newZone = await createZone({
+          ...values,
+          plans: plansUpdated,
+        });
         setZones((prevZones) => [...prevZones, newZone]);
         addToast({
           title: "Zona creada",

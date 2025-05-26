@@ -25,6 +25,7 @@ export interface State {
   past: Overlay[][];
   now: Overlay[];
   future: Overlay[][];
+  shapesToDelete: string[]; // IDs of shapes to delete
 }
 
 export interface DrawResult {

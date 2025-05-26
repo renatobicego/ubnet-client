@@ -8,8 +8,7 @@ import {
   DrawingActionKind,
   ShapeData,
 } from "@/types/maps-types";
-import { useDeleteClickHandler } from "@/utils/hooks/useDeleteShapeClickHandler";
-import { updateShapes } from "@/services/mapsZonesServices";
+import { deleteShapes, updateShapes } from "@/services/mapsZonesServices";
 import { isCircle, isPolygon } from "@/utils/mapsUtils";
 import { addToast } from "@heroui/react";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
@@ -30,8 +29,6 @@ export function UndoRedoControl({
 }: UndoRedoControlProps) {
   const map = useMap();
   const [isLoading, setIsLoading] = useState(false);
-
-  useDeleteClickHandler(map, state.now, dispatch, isDeleteMode);
 
   const handleUndo = useCallback(() => {
     dispatch({
@@ -78,6 +75,7 @@ export function UndoRedoControl({
           : undefined,
       }));
       await updateShapes(shapesToSave);
+      await deleteShapes(state.shapesToDelete);
       addToast({
         title: "Cobertura Actualizada",
         description: "Las zonas han sido actualizadas correctamente",
