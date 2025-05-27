@@ -40,7 +40,7 @@ const PlanZoneForm = ({
   useEffect(() => {
     const fetchPlans = async () => {
       const plans = await getPlans();
-      setPlans(plans);
+      setPlans(plans.filter((plan) => plan.isActive));
     };
     fetchPlans();
   }, []);

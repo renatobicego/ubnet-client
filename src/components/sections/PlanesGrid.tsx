@@ -15,11 +15,14 @@ const PlanesGrid = ({
   const [zoneSelected, setZoneSelected] = useState<Zone>();
   const [zones, setZones] = useState<Zone[]>([]);
   const [filterSelected, setFilterSelected] = useState<PlanType>("fiber");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchZones = async () => {
+      setIsLoading(true);
       const zones = await getZonesAndPlans();
       setZones(zones);
+      setIsLoading(false);
     };
     fetchZones();
   }, []);
@@ -39,6 +42,7 @@ const PlanesGrid = ({
         radius="lg"
         placeholder="Seleccioná tu zona"
         selectedKeys={[zoneSelected ? zoneSelected._id : ""]}
+        isLoading={isLoading}
         onChange={(e) =>
           setZoneSelected(zones.find((zone) => zone._id === e.target.value))
         }

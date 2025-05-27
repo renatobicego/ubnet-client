@@ -103,7 +103,10 @@ export default function PlanCard({
             />
           </CardHeader>
           {isFormPlan && (
-            <Chip className="absolute top-4 right-4">
+            <Chip
+              color={plan.isActive ? "success" : "danger"}
+              className="absolute top-4 right-4"
+            >
               {plan.isActive ? "Plan Activo" : "Plan Inactivo"}
             </Chip>
           )}
@@ -140,7 +143,10 @@ export default function PlanCard({
             </Chip>
           )}
           {isFormPlan && (
-            <Chip className="absolute top-4 right-4">
+            <Chip
+              color={plan.isActive ? "success" : "danger"}
+              className="absolute top-4 right-4"
+            >
               {plan.isActive ? "Plan Activo" : "Plan Inactivo"}
             </Chip>
           )}
@@ -179,7 +185,10 @@ export default function PlanCard({
             </Chip>
           )}
           {isFormPlan && (
-            <Chip className="absolute top-4 right-4">
+            <Chip
+              color={plan.isActive ? "success" : "danger"}
+              className="absolute top-4 right-4"
+            >
               {plan.isActive ? "Plan Activo" : "Plan Inactivo"}
             </Chip>
           )}

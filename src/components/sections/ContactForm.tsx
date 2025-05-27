@@ -147,7 +147,7 @@ const ContactForm = () => {
                     startContent={<FaWhatsapp className="size-5" />}
                     target="_blank"
                     as={Link}
-                    href="https://wa.me/+542974262219"
+                    href="https://wa.me/+5492974262219"
                   >
                     297 426 2219
                   </PrimaryButton>

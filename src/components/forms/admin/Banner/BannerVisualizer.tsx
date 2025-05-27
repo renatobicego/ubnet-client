@@ -248,6 +248,8 @@ const BannerVisualizer = () => {
           <menu className="flex items-center gap-2">
             <PrimaryButton
               onPress={async () => {
+                const confirmCancel = confirm("¿Estas seguro de cancelar?");
+                if (!confirmCancel) return;
                 setIsEditing((prev) => ({
                   ...prev,
                   editingOrder: false,

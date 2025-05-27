@@ -93,7 +93,6 @@ export const createPlan = async (
   },
 ) => {
   try {
-    console.log(plan);
     const { data }: { data: SubscriptionPlan } = await axios.post(
       `${API_URL}/plan`,
       plan,
