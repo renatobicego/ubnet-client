@@ -38,7 +38,7 @@ const Footer = () => {
             target="_blank"
             className="pl-6"
             as={Link}
-            href="https://wa.me/+542974262219"
+            href="https://wa.me/+542974738886"
           >
             297 426 2219
           </PrimaryButton>

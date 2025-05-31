@@ -8,7 +8,7 @@ const WhatsappButton = () => {
       isIconOnly
       color="secondary"
       as={Link}
-      href="https://wa.me/+542974262219"
+      href="https://wa.me/+542974738886"
       target="_blank"
       radius="full"
       className="fixed right-6 bottom-6 z-50 p-1 md:size-12 lg:right-8 lg:bottom-8 2xl:size-12"

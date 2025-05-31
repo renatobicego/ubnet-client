@@ -43,9 +43,6 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   title: "Ubnet",
   description: "La internet más rápida de la región patagónica",
-  // alternates: {
-  //   canonical: 'https://www.ubnet.com.ar/your-page-path', // Use absolute URL
-  // },
   keywords: [
     "internet",
     "fibra óptica",
