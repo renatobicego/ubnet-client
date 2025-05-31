@@ -1,6 +1,13 @@
 import PlanesGrid from "@/components/sections/PlanesGrid";
 import { PlanType } from "@/types/subscription-plans";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Nuestros Servicios - Ubnet",
+  description:
+    "Descubrí nuestros planes de internet y cámaras de seguridad. Conectá tu hogar o negocio con Ubnet.",
+};
 
 export default function SubscriptionPlansPage() {
   const filters: { id: PlanType; label: string }[] = [

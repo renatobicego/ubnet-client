@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sobre Nosotros - Ubnet",
+  description: "Conocé más sobre Ubnet y nuestra trayectoria.",
+};
+
 export default function AboutUs() {
   return (
     <main className="bg-secondary_bg">

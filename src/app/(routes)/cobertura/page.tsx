@@ -1,5 +1,11 @@
 import { MapSetup } from "@/components/maps/ZonesMap";
 import ZonesMapWrapper from "@/components/maps/ZonesMapWrapper";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Cobertura - Ubnet",
+  description: "Descubrí nuestra cobertura de servicio de internet.",
+};
 
 export default function MapZones() {
   return (
