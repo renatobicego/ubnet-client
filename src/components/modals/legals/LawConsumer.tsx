@@ -1,25 +1,18 @@
 import React from "react";
 import PrimaryButton from "../../buttons/PrimaryButton";
-import CustomModal from "./CustomModal";
+import Link from "next/link";
 
 const LawConsumer = () => {
   return (
-    <CustomModal
-      title="Ley de Defensa al Consumidor"
-      button={
-        <PrimaryButton
-          size="sm"
-          className="bg-black p-0 font-normal text-white max-md:text-xs"
-        >
-          Ley de Defensa al Consumidor
-        </PrimaryButton>
-      }
+    <PrimaryButton
+      size="sm"
+      as={Link}
+      target="_blank"
+      href="https://servicios.infoleg.gob.ar/infolegInternet/anexos/0-4999/638/texact.htm"
+      className="bg-black p-0 font-normal text-white max-md:text-xs"
     >
-      <p className="text-center">
-        Data
-        <br />
-      </p>
-    </CustomModal>
+      Ley de Defensa al Consumidor
+    </PrimaryButton>
   );
 };
 

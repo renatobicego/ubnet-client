@@ -1,25 +1,18 @@
 import React from "react";
 import PrimaryButton from "../../buttons/PrimaryButton";
-import CustomModal from "./CustomModal";
+import Link from "next/link";
 
 const RulesClientsTIC = () => {
   return (
-    <CustomModal
-      title="Reglamento de Clientes de Servicios TIC"
-      button={
-        <PrimaryButton
-          size="sm"
-          className="bg-black p-0 font-normal text-white max-md:text-xs"
-        >
-          Reglamento de Clientes de Servicios TIC
-        </PrimaryButton>
-      }
+    <PrimaryButton
+      size="sm"
+      as={Link}
+      target="_blank"
+      href="https://servicios.infoleg.gob.ar/infolegInternet/anexos/305000-309999/305484/norma.htm"
+      className="bg-black p-0 font-normal text-white max-md:text-xs"
     >
-      <p className="text-center">
-        Data
-        <br />
-      </p>
-    </CustomModal>
+      Reglamento de Clientes de Servicios TIC
+    </PrimaryButton>
   );
 };
 

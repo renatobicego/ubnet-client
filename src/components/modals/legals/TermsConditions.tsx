@@ -15,10 +15,8 @@ const TermsConditions = () => {
         </PrimaryButton>
       }
     >
-      <p className="text-center">
-        Data
-        <br />
-      </p>
+      Equipamiento otorgado en comodato. Instalación gratuita mediante
+      suscripción por débito automático tarjeta de crédito.
     </CustomModal>
   );
 };
