@@ -18,6 +18,7 @@ const Eurostile = localFont({
     },
   ],
   display: "swap",
+  preload: true,
   variable: "--font-eurostile",
 });
 const HelveticaNeue = localFont({
@@ -35,11 +36,16 @@ const HelveticaNeue = localFont({
   ],
   display: "swap",
   variable: "--font-helvetica-neue",
+  preload: true,
 });
 
 export const metadata: Metadata = {
+  manifest: "/manifest.json",
   title: "Ubnet",
   description: "La internet más rápida de la región patagónica",
+  // alternates: {
+  //   canonical: 'https://www.ubnet.com.ar/your-page-path', // Use absolute URL
+  // },
   keywords: [
     "internet",
     "fibra óptica",
@@ -90,6 +96,8 @@ export const metadata: Metadata = {
     follow: true,
     "max-image-preview": "large",
     "max-snippet": -1,
+    "max-video-preview": -1,
+    notranslate: false,
   },
 };
 
@@ -100,12 +108,26 @@ export default function RootLayout({
 }>) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": "https://ubnet-client.vercel.app/",
-    url: "https://ubnet-client.vercel.app/",
+    "@type": "LocalBusiness",
+    "@id": "https://www.ubnet.com.ar/",
     name: "Ubnet",
     image: ["https://ubnet-client.vercel.app/thumbnail.jpg"],
     description: "La internet más rápida de la región patagónica",
+    url: "https://www.ubnet.com.ar/",
+    telephone: "+542974738886",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Av. Coronel Francisco Seguí 906",
+      addressLocality: "Rada Tilly",
+      addressRegion: "Chubut",
+      postalCode: "U9001",
+      addressCountry: "AR",
+    },
+    areaServed: "Región Patagónica",
+    sameAs: [
+      "https://www.facebook.com/ubnetcaletaolivia",
+      "https://www.instagram.com/ubnet_oficial",
+    ],
   };
   return (
     <html lang="es">
