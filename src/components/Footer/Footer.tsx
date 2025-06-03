@@ -40,10 +40,10 @@ const Footer = () => {
             as={Link}
             href="https://wa.me/+542974738886"
           >
-            297 426 2219
+            297 473 8886
           </PrimaryButton>
           <p className="text-xs md:text-sm xl:text-base">
-            Lunes a viernes de 9hs a 18hs
+            Lunes a viernes de 9hs a 21hs
           </p>
         </address>
       </div>
