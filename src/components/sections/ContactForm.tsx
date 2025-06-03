@@ -153,7 +153,7 @@ const ContactForm = () => {
                   </PrimaryButton>
                 </div>
                 <p className="text-xs md:text-sm xl:text-base">
-                  Lunes a viernes de 9hs a 21hs
+                  Todos los días de 9hs a 21hs
                 </p>
               </address>
             </div>
