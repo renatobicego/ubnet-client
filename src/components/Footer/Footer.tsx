@@ -53,6 +53,17 @@ const Footer = () => {
         <LawConsumer />
         <RulesClientsTIC />
       </nav>
+      <hr className="my-4 w-full max-w-screen-xl text-white" />
+      <Link href="https://dutsiland.com" target="_blank">
+        <Image
+          width={170}
+          height={30}
+          className="max-md:w-1/2"
+          src="/dutsiland.png"
+          alt="logo dutsiland"
+          unoptimized
+        />
+      </Link>
     </footer>
   );
 };
