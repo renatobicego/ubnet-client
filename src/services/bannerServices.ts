@@ -65,7 +65,6 @@ export const updateBanners = async (
 
 export const deleteBanner = async (id: string) => {
   try {
-    console.log(id);
     await axios.delete(`${API_URL}/banner/${id}`, {
       headers: {
         "Content-Type": "application/json",

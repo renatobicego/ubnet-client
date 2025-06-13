@@ -5,6 +5,7 @@ import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useEffect, useReducer, useRef } from "react";
 import { useLoadShapes } from "@/utils/hooks/useLoadShapes";
 import reducer from "@/store/mapsReducer";
+import { Spinner } from "@heroui/react";
 
 // Replace with your actual API key
 
@@ -38,7 +39,7 @@ const DrawingMap = ({
   });
 
   // Set up event listeners and load shapes
-  useLoadShapes(map, drawing, dispatch);
+  const { isLoading } = useLoadShapes(map, drawing, dispatch);
 
   // Only update the center when latLng changes
   useEffect(() => {
@@ -47,8 +48,15 @@ const DrawingMap = ({
     }
   }, [latLng]);
 
+  const isReady = !!drawing && !isLoading;
+
   return (
-    <div className="h-[60vh] w-full">
+    <div className="relative h-[60vh] w-full">
+      {!isReady && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/70">
+          <Spinner size="lg" />
+        </div>
+      )}
       <Map
         defaultZoom={12}
         defaultCenter={{ lat: latLng.lat, lng: latLng.lng }}

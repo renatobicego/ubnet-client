@@ -13,6 +13,7 @@ import { UndoRedoControl } from "./UndoRedoControl";
 import { useDrawingManager } from "@/utils/hooks/useDrawingManager";
 import { useDrawingManagerEvents } from "@/utils/hooks/useDrawingManagerEvents";
 import { useOverlaySnapshots } from "@/utils/hooks/useOverlaySnapshots";
+import { Spinner } from "@heroui/react";
 
 const ZoneMapForm = ({
   onEditingChange,
@@ -40,15 +41,22 @@ const ZoneMapForm = ({
   useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch);
   useOverlaySnapshots(map, state, overlaysShouldUpdateRef);
   useDeleteClickHandler(map, state.now, dispatch, isDeleteMode);
-  useLoadShapes(map, drawing, dispatch);
+  const { isLoading } = useLoadShapes(map, drawing, dispatch);
 
   useEffect(() => {
     if (onEditingChange) onEditingChange(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const isReady = !!drawing && !isLoading;
+
   return (
-    <div className="h-[60vh] w-full">
+    <div className="relative h-[60vh] w-full">
+      {!isReady && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/70">
+          <Spinner size="lg" />
+        </div>
+      )}
       <Map
         defaultZoom={12}
         defaultCenter={{ lat: -45.8569848, lng: -67.5136643 }}

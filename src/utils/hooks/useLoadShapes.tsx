@@ -1,6 +1,7 @@
 import { getShapes } from "@/services/mapsZonesServices";
 import { Action, DrawingActionKind } from "@/types/maps-types";
-import { Dispatch, useEffect } from "react";
+import { addToast } from "@heroui/react";
+import { Dispatch, useEffect, useState } from "react";
 
 // Load shapes from the database
 export function useLoadShapes(
@@ -8,8 +9,10 @@ export function useLoadShapes(
   drawing: google.maps.DrawingLibrary | null,
   dispatch: Dispatch<Action>,
 ) {
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (!map || !drawing) return;
+    setIsLoading(true);
 
     const loadShapes = async () => {
       try {
@@ -54,11 +57,18 @@ export function useLoadShapes(
             });
           }
         });
-      } catch (error) {
-        console.error("Error loading shapes:", error);
+        setIsLoading(false);
+      } catch {
+        setIsLoading(false);
+        addToast({
+          title: "Error al cargar la cobertura",
+          color: "danger",
+        });
       }
     };
 
     loadShapes();
   }, [drawing, dispatch, map]);
+
+  return { isLoading };
 }

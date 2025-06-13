@@ -15,7 +15,6 @@ export const getShapes = async () => {
         },
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching data shape:", error);
@@ -25,7 +24,6 @@ export const getShapes = async () => {
 
 export const updateShapes = async (shapes: ShapeData[]) => {
   try {
-    console.log(shapes.map((shape) => shape));
     await axios.post(`${API_URL}/shapeData`, shapes, {
       headers: {
         "Content-Type": "application/json",
