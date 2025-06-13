@@ -41,7 +41,7 @@ const ZoneMapForm = ({
   useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch);
   useOverlaySnapshots(map, state, overlaysShouldUpdateRef);
   useDeleteClickHandler(map, state.now, dispatch, isDeleteMode);
-  const { isLoading } = useLoadShapes(map, drawing, dispatch);
+  const { isLoading } = useLoadShapes(map, drawing, dispatch, true);
 
   useEffect(() => {
     if (onEditingChange) onEditingChange(true);

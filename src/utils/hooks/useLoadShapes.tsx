@@ -8,6 +8,7 @@ export function useLoadShapes(
   map: google.maps.Map | null,
   drawing: google.maps.DrawingLibrary | null,
   dispatch: Dispatch<Action>,
+  editable = false,
 ) {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -28,6 +29,8 @@ export function useLoadShapes(
               strokeColor: "#0D4DA1",
               fillColor: "#0D4DA1",
               fillOpacity: 0.4,
+              editable: editable,
+              draggable: editable,
             });
 
             dispatch({
@@ -45,6 +48,8 @@ export function useLoadShapes(
               strokeColor: "#DE5753",
               fillColor: "#DE5753",
               fillOpacity: 0.4,
+              editable: editable,
+              draggable: editable,
             });
 
             dispatch({
@@ -68,7 +73,7 @@ export function useLoadShapes(
     };
 
     loadShapes();
-  }, [drawing, dispatch, map]);
+  }, [drawing, dispatch, map, editable]);
 
   return { isLoading };
 }
